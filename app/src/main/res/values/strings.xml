@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FOODIARY</string>
+
+    <!--start.xml-->
+
+    <string name="editInfo">정보를 입력하세요</string>
+    <string name="UserName">이름</string>
+</resources>
