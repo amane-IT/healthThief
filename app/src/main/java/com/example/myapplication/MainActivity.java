@@ -154,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         camera = Camera.open();
     }
 
-
     public void surfaceDestroyed(SurfaceHolder holder){
         camera.stopPreview();
         camera.release();
