@@ -160,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         camera = null;
         previewing = false;
     }
-// I/ve changed
 
     private void checkDangerousPermissions(){
         String[] permissions = {
