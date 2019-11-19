@@ -200,7 +200,6 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
 
             //파일로 저장
             new MyCameraPreview.SaveImageTask().execute(currentData);
-
         }
     };
 

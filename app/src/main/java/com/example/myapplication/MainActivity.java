@@ -1,42 +1,20 @@
 package com.example.myapplication;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
+
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -46,7 +24,6 @@ public class MainActivity extends AppCompatActivity{
     private Camera camera = null;
     SurfaceView surfaceView;
     SurfaceHolder holder;
-    boolean previewing = false;
 
     private Camera.CameraInfo mCameraInfo;
     private int mDisplayOrientation;
