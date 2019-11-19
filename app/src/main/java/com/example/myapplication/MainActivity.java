@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
             try{
                 camera.setPreviewDisplay(holder);
                 camera.setDisplayOrientation(90);
-
                 camera.startPreview();
                 previewing = true;
             } catch (IOException e) {
