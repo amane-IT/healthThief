@@ -144,14 +144,26 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
      */
     public void takePicture(){
 
-        mCamera.takePicture(shutterCallback, rawCallback, jpegCallback);
+        mCamera.takePicture(myShutterCallback, rawCallback, jpegCallback);
+    }
+
+    Camera.AutoFocusCallback myAutoFocusCallback = new Camera.AutoFocusCallback() {
+        @Override
+        public void onAutoFocus(boolean b, Camera camera) {
+
+        }
+    };
+
+    public void autoFocus(){
+        mCamera.autoFocus(myAutoFocusCallback);
     }
 
 
     /**
      * 이미지 저장을 위한 콜백 함수
      */
-    private Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+    Camera.ShutterCallback myShutterCallback = new Camera.ShutterCallback() {
+        @Override
         public void onShutter() {
 
         }

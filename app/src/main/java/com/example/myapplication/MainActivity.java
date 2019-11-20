@@ -14,6 +14,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity{
@@ -25,11 +26,10 @@ public class MainActivity extends AppCompatActivity{
     SurfaceView surfaceView;
     SurfaceHolder holder;
 
-    private Camera.CameraInfo mCameraInfo;
-    private int mDisplayOrientation;
-
     private int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
     MyCameraPreview myCameraPreview;
+
+    Button picture;
 
 
 
@@ -40,13 +40,10 @@ public class MainActivity extends AppCompatActivity{
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        mCameraInfo = new Camera.CameraInfo();
-        mDisplayOrientation = getWindowManager().getDefaultDisplay().getRotation();
-
         myCameraPreview = new MyCameraPreview(this, CAMERA_FACING);
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
-        Button picure = (Button)findViewById(R.id.picBtn);
+        picture = (Button)findViewById(R.id.picBtn);
         surfaceView = (SurfaceView)findViewById(R.id.viewer);
         holder = surfaceView.getHolder();
         holder.addCallback(myCameraPreview);
@@ -54,14 +51,24 @@ public class MainActivity extends AppCompatActivity{
 //        camera.startPreview();
 
 
-        picure.setOnClickListener(new Button.OnClickListener(){
+        picture.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 myCameraPreview.takePicture();
             }
         });
 
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linear);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myCameraPreview.autoFocus();
+            }
+        });
+
         checkDangerousPermissions();
     }
+
+
 
     private void checkDangerousPermissions(){
         String[] permissions = {
