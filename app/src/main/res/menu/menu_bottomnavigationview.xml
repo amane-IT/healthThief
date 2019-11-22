@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/searchItem"
+        android:id="@+id/cameraItem"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Camera" />
     <item
-        android:id="@+id/cameraItem"
+        android:id="@+id/diaryItem"
         android:icon="@android:drawable/ic_menu_camera"
         android:title="Diary" />
     <item
@@ -15,7 +15,7 @@
     android:title="Report" />
 
     <item
-        android:id="@+id/settingitem"
+        android:id="@+id/settingItem"
         android:icon="@android:drawable/ic_menu_call"
         android:title="Setting" />
 

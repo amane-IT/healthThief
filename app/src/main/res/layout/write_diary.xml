@@ -22,9 +22,6 @@
             tools:layout_editor_absoluteY="55dp"
             tools:srcCompat="@tools:sample/avatars" />
 
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -74,7 +71,7 @@
 
         <Button
             android:id="@+id/button3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Menu Details" />
 
@@ -101,25 +98,42 @@
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/editText"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Diary Content" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Diary Content" />
+            android:orientation="horizontal">
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장"/>
 
-        <!--클릭시 00월 00일 다이어리가 등록되었습니다! 토스트-->
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Diary Done!" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
 
+
 </android.support.constraint.ConstraintLayout>
+

@@ -56,7 +56,7 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
         mHolder = getHolder();
         mHolder.addCallback(this);
 
-        // deprecated setting, but required on Android versions prior to 3.0
+        // deprecated fragment_setting, but required on Android versions prior to 3.0
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         // get display orientation
@@ -78,7 +78,7 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
             mCamera.startPreview();
 
         } catch (IOException e) {
-            Log.d(TAG, "Error setting camera preview: " + e.getMessage());
+            Log.d(TAG, "Error fragment_setting camera preview: " + e.getMessage());
         }
     }
 

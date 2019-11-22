@@ -1,44 +1,66 @@
 package com.example.myapplication;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.PixelFormat;
-import android.hardware.Camera;
-import android.media.ExifInterface;
-import android.net.Uri;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
+import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 public class MainActivity extends AppCompatActivity{
+
+    // 하단 탭 각 메뉴들 fragment 지정. 카메라는 fragment가 아닌 새 창을 만드는거 같아서... 일단 빼둠
+    private FragmentManager fragmentManager = getSupportFragmentManager();
+    private fragmentDiary fragmentDiary = new fragmentDiary();
+    private fragmentReport fragmentReport = new fragmentReport();
+    private fragmentSetting fragmentSetting = new fragmentSetting();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+
+        // 첫 화면 지정
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.frameLayout, fragmentDiary).commitAllowingStateLoss();
+
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+    }
+
+    // bottomNavigationView의 아이템이 선택될 때 호출될 리스너 등록
+    class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            switch(menuItem.getItemId())
+            {
+                case R.id.diaryItem:
+                    transaction.replace(R.id.frameLayout, fragmentDiary).commitAllowingStateLoss();
+
+                    break;
+                case R.id.reportItem:
+                    transaction.replace(R.id.frameLayout, fragmentReport).commitAllowingStateLoss();
+                    break;
+                case R.id.settingItem:
+                    transaction.replace(R.id.frameLayout, fragmentSetting).commitAllowingStateLoss();
+                    break;
+            }
+            return true;
+        }
+    }
+
+
+    /* onCreate 에 카메라 있음
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     private static final String TAG = "";
@@ -53,7 +75,6 @@ public class MainActivity extends AppCompatActivity{
 
     private int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
     MyCameraPreview myCameraPreview;
-
 
 
     @Override
@@ -85,6 +106,10 @@ public class MainActivity extends AppCompatActivity{
 
         checkDangerousPermissions();
     }
+
+
+     */
+
 
     private void checkDangerousPermissions(){
         String[] permissions = {
