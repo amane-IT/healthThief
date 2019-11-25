@@ -44,8 +44,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="parent"
-        app:menu="@menu/menu_bottomnavigationview" />
+        app:menu="@menu/menu_bottomnavigationview"
+        app:labelVisibilityMode="unlabeled"/>
 
-
+    <!-- labelVisibilityMode : 메뉴 선택시 색은 바뀌데 위치는 바뀌지 않음. 글자도 안 뜸-->
 
 </android.support.constraint.ConstraintLayout>

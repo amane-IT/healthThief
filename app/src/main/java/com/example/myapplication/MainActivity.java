@@ -1,7 +1,11 @@
 package com.example.myapplication;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -21,6 +25,25 @@ public class MainActivity extends AppCompatActivity{
     private fragmentReport fragmentReport = new fragmentReport();
     private fragmentSetting fragmentSetting = new fragmentSetting();
 
+
+    //첫 실행 체크
+    public boolean CheckAppFirstExecute(){
+        SharedPreferences pref = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
+        boolean isFirst = pref.getBoolean("isFirst",false);
+        if(!isFirst){
+            //최초 실행시 permissions 확인
+            checkDangerousPermissions();
+            // 최초 실행시 프로필 작성
+            Intent goProfile = new Intent(this,MakingDiary.class);
+            startActivity(goProfile);
+
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("isFirst",true);
+            editor.apply();
+        }
+        return !isFirst;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +57,8 @@ public class MainActivity extends AppCompatActivity{
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+
+        CheckAppFirstExecute();
     }
 
     // bottomNavigationView의 아이템이 선택될 때 호출될 리스너 등록
@@ -44,6 +69,10 @@ public class MainActivity extends AppCompatActivity{
 
             switch(menuItem.getItemId())
             {
+                case R.id.cameraItem:
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivity(intent);
+
                 case R.id.diaryItem:
                     transaction.replace(R.id.frameLayout, fragmentDiary).commitAllowingStateLoss();
 

@@ -7,15 +7,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/chooseDate"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="다이어리 리스트 뷰"
-            android:padding="30dp"
-            android:textSize="30dp"/>
+            android:text="Date you Pick"
+            android:textSize="40sp"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+
 
     </LinearLayout>
 
