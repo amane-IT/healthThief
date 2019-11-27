@@ -2,14 +2,22 @@ package com.example.myapplication;
 
 import android.Manifest;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -17,20 +25,27 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Timer;
+
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity{
 
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
     private static final String TAG = "";
 
-    private Camera camera = null;
     SurfaceView surfaceView;
     SurfaceHolder holder;
 
     private int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
     MyCameraPreview myCameraPreview;
 
-    Button picture;
-
+    Button picture, save, cancel, next;
+    Intent intent;
 
 
     @Override
@@ -43,19 +58,15 @@ public class MainActivity extends AppCompatActivity{
         myCameraPreview = new MyCameraPreview(this, CAMERA_FACING);
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
-        picture = (Button)findViewById(R.id.picBtn);
+
+
+        next = (Button)findViewById(R.id.next);
+
         surfaceView = (SurfaceView)findViewById(R.id.viewer);
         holder = surfaceView.getHolder();
         holder.addCallback(myCameraPreview);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 //        camera.startPreview();
-
-
-        picture.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                myCameraPreview.takePicture();
-            }
-        });
 
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.linear);
         linearLayout.setOnClickListener(new View.OnClickListener() {
@@ -65,10 +76,34 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        Log.d(TAG, "onCreate'd");
+
         checkDangerousPermissions();
     }
 
+    public void m_onClick(View v){
+        picture = (Button)findViewById(R.id.picBtn);
+        save = (Button)findViewById(R.id.save);
+        cancel = (Button)findViewById(R.id.cancel);
 
+        switch(v.getId())
+        {
+            case R.id.picBtn:
+                myCameraPreview.takePicture();
+                picture.setVisibility(View.INVISIBLE);
+                save.setVisibility(View.VISIBLE);
+                cancel.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.save:
+                intent = new Intent(this, CheckingPhoto.class);
+                startActivity(intent);
+                break;
+
+
+        }
+
+    }
 
     private void checkDangerousPermissions(){
         String[] permissions = {
@@ -111,5 +146,6 @@ public class MainActivity extends AppCompatActivity{
             }
         }
     }
+
 
 }

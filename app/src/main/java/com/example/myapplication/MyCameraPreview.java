@@ -33,6 +33,14 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
     private Camera.CameraInfo mCameraInfo;
 
     private int mDisplayOrientation;
+    public static Long time = System.currentTimeMillis();
+
+    boolean previewing;
+    byte[] currentData;
+
+    public MyCameraPreview(Context context) {
+        super(context);
+        }
 
     public MyCameraPreview(Context context, int cameraId) {
         super(context);
@@ -84,12 +92,17 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.d(TAG, "surfaceDestroyed");
+        mCamera.stopPreview();
+        mCamera.release();
+        mCamera = null;
+        previewing = false;
         // empty. Take care of releasing the Camera preview in your activity.
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        if(mHolder.getSurface() == null){
+        if(previewing){
             mCamera.stopPreview();
+            previewing = false;
         }
 
         if(mCamera != null)
@@ -99,11 +112,11 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
                 int orientation = calculatePreviewOrientation(mCameraInfo, mDisplayOrientation);
                 mCamera.setDisplayOrientation(orientation);
                 mCamera.startPreview();
+                previewing = true;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     /**
@@ -145,6 +158,7 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
     public void takePicture(){
 
         mCamera.takePicture(myShutterCallback, rawCallback, jpegCallback);
+
     }
 
     Camera.AutoFocusCallback myAutoFocusCallback = new Camera.AutoFocusCallback() {
@@ -178,7 +192,6 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
 
     private Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
         public void onPictureTaken(byte[] data, Camera camera) {
-
             //이미지의 너비와 높이 결정
             int w = camera.getParameters().getPictureSize().width;
             int h = camera.getParameters().getPictureSize().height;
@@ -208,9 +221,9 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
             //bitmap 을  byte array 로 변환
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-            byte[] currentData = stream.toByteArray();
 
-            //파일로 저장
+            currentData = stream.toByteArray();
+
             new MyCameraPreview.SaveImageTask().execute(currentData);
         }
     };
@@ -226,12 +239,15 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
 
             try {
 
-                File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/camtest");
+                File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Foodiary");
+                Log.d("경로", Environment.getExternalStorageDirectory().getAbsolutePath() + "/Foodiary");
                 if (!path.exists()) {
                     path.mkdirs();
                 }
 
-                String fileName = String.format("%d.jpg", System.currentTimeMillis());
+
+
+                String fileName = Long.toString(time) + ".jpg";
                 File outputFile = new File(path, fileName);
 
                 outStream = new FileOutputStream(outputFile);
@@ -271,4 +287,10 @@ public class MyCameraPreview extends SurfaceView implements SurfaceHolder.Callba
         }
 
     }
+
+    public String returnTime(){
+        String picName = Long.toString(time);
+        return picName;
+    }
+
 }

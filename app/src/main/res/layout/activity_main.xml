@@ -12,19 +12,51 @@
     <!--메인 홈 하단메뉴 여기에-->
     <!-- https://lktprogrammer.tistory.com/183 -->
 
-    <Button
-        android:id="@+id/picBtn"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="pic" />
+        android:layout_height="wrap_content">
 
-    <SurfaceView
-        android:id="@+id/viewer"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:onClick="m_onClick"
+                android:text="확인" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="m_onClick"
+            android:text="다음"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/picBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="m_onClick"
+            android:text="촬영"
+            android:visibility="visible" />
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
+        <SurfaceView
+            android:id="@+id/viewer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-
+    </LinearLayout>
 
     <!--
     <FrameLayout
