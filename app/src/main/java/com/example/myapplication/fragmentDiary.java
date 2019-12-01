@@ -1,6 +1,5 @@
 package com.example.myapplication;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,19 +12,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class fragmentDiary  extends Fragment {
     View rootView;
     Button dateBt;
 
-    public fragmentDiary(){
-        //Required empty public constructor
-    }
-
+    public DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener(){
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+            int month = monthOfYear+1;
+            dateBt.setText(year+"년 "+month+"월 "+dayOfMonth+"일");
+            //해당 날짜의 정보를 가져오는 코드
+        }
+    };
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,14 +50,16 @@ public class fragmentDiary  extends Fragment {
             public void onClick(View v)
             {
                 Log.i("Diary BUTTON","Date Picking");
-                DialogFragment newFragment = new DateFragment();
-                newFragment.show(getFragmentManager(), "DatePicker");
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, 2019, 12, 01);
+                dialog.show();
             }
         });
 
+
+
         //리사이클러뷰에 표시할 데이터 리스트 생성
         ArrayList<String> list = new ArrayList<>();
-        for(int i=0;i<4; i++)
+        for(int i=0;i<3; i++)
         {
             list.add(String.format("TEXT %d",i));
         }

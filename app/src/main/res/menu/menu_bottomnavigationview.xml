@@ -2,18 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/cameraItem"
-        android:icon="@android:drawable/ic_menu_camera"
-        android:title="Camera" />
-    <item
         android:id="@+id/diaryItem"
         android:icon="@android:drawable/ic_menu_my_calendar"
         android:title="Diary" />
     <item
+        android:id="@+id/cameraItem"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Camera" />
+    <item
     android:id="@+id/reportItem"
     android:icon="@android:drawable/ic_menu_sort_by_size"
     android:title="Report" />
-
     <item
         android:id="@+id/settingItem"
         android:icon="@android:drawable/ic_menu_preferences"

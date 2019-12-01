@@ -15,45 +15,111 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
+            <TextView
+                android:id="@+id/setText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로필" />
 
-        <TextView
-            android:id="@+id/textView0"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="프로필" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
+            <TextView
+            android:id="@+id/setText2"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="이름" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="나이" />
+            <TextView
+                android:id="@+id/fname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my name" />
 
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="몸무게" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView10"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="성별" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/textView11"
+            <TextView
+                android:id="@+id/setText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="나이" />
+
+            <TextView
+                android:id="@+id/fage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my age" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="권장 칼로리" />
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/setText4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="몸무게" />
+
+            <TextView
+                android:id="@+id/fweight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my weight" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/setText5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="성별" />
+
+            <TextView
+                android:id="@+id/fsex"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="my sex" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/setText6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="권장 칼로리" />
+
+            <TextView
+                android:id="@+id/fcalorie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="my suggested calorie" />
+
+        </LinearLayout>
+
+        <!-- 버튼 클릭시 fragmentSetting 실행 / 이후 setProfile intent ㄱㄱ-->
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/settingDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="설정 변경" />
