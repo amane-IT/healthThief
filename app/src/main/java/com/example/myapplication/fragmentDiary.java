@@ -3,7 +3,6 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,11 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ListAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class fragmentDiary  extends Fragment {
     View rootView;
@@ -56,7 +55,6 @@ public class fragmentDiary  extends Fragment {
         });
 
 
-
         //리사이클러뷰에 표시할 데이터 리스트 생성
         ArrayList<String> list = new ArrayList<>();
         for(int i=0;i<3; i++)
@@ -71,6 +69,7 @@ public class fragmentDiary  extends Fragment {
         //리사이클러뷰에 simpleTextAdapter 객체 지정
         RecyclerviewItemAdapter adapter = new RecyclerviewItemAdapter(list);
         recyclerView.setAdapter((adapter));
+
 
         // return inflater.inflate(R.layout.fragment_diary, container, false);
         return rootView;
