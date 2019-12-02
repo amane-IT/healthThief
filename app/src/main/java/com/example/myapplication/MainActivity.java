@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity{
             //최초 실행시 permissions 확인
             checkDangerousPermissions();
             // 최초 실행시 프로필 작성
-            Intent goProfile = new Intent(this,MakingDiary.class);
+            Intent goProfile = new Intent(this, WriteDiary.class);
             startActivity(goProfile);
 
             SharedPreferences.Editor editor = pref.edit();
@@ -87,58 +87,6 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
     }
-
-
-    /* onCreate 에 카메라 있음
-
-    private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 0;
-    private static final String TAG = "";
-
-    private Camera camera = null;
-    SurfaceView surfaceView;
-    SurfaceHolder holder;
-    boolean previewing = false;
-
-    private Camera.CameraInfo mCameraInfo;
-    private int mDisplayOrientation;
-
-    private int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_BACK;
-    MyCameraPreview myCameraPreview;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-        mCameraInfo = new Camera.CameraInfo();
-        mDisplayOrientation = getWindowManager().getDefaultDisplay().getRotation();
-
-        myCameraPreview = new MyCameraPreview(this, CAMERA_FACING);
-
-        getWindow().setFormat(PixelFormat.UNKNOWN);
-        Button picure = (Button)findViewById(R.id.picBtn);
-        surfaceView = (SurfaceView)findViewById(R.id.viewer);
-        holder = surfaceView.getHolder();
-        holder.addCallback(myCameraPreview);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-//        camera.startPreview();
-
-
-        picure.setOnClickListener(new Button.OnClickListener(){
-            public void onClick(View v){
-                myCameraPreview.takePicture();
-            }
-        });
-
-        checkDangerousPermissions();
-    }
-
-
-     */
-
 
     private void checkDangerousPermissions(){
         String[] permissions = {

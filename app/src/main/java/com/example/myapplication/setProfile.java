@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+
+// set_profile.xml에 표시된 프로필을 작성하고 '시작하기' 버튼을 클릭하면 fragmentSetting.java로 데이터가 이동한다.
+// 이후 fragmentSetting의 정보를 수정할때도 setProfile.java가 실행된다.
 public class setProfile extends AppCompatActivity {
 
     Button start;
@@ -19,7 +22,7 @@ public class setProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.start);
+        setContentView(R.layout.set_profile);
         buttonClick();
     }
 
@@ -60,6 +63,7 @@ public class setProfile extends AppCompatActivity {
             }
         });
 
+
         setBt = findViewById(R.id.settingDone);
         setBt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +93,7 @@ public class setProfile extends AppCompatActivity {
         });
     }
 
-    // 프로필을 작성하고 시작하기 버튼을 클릭하면 fragmentSetting.java로 데이터가 이동한다.
-    // 이후 fragmentSetting의 정보를 수정할때도 setProfile.java가 실행된다.
+
 
 
 }

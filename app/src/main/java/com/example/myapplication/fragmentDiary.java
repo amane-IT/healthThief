@@ -1,5 +1,6 @@
 package com.example.myapplication;
 import android.app.DatePickerDialog;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,12 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+// 날짜별 다이어리 리스트(간소화된 정보)를 보여준다.
 public class fragmentDiary  extends Fragment {
     View rootView;
     Button dateBt;
@@ -27,9 +28,30 @@ public class fragmentDiary  extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
             int month = monthOfYear+1;
             dateBt.setText(year+"년 "+month+"월 "+dayOfMonth+"일");
-            //해당 날짜의 정보를 가져오는 코드
+
+            //해당 날짜의 정보를 있는 만큼 가져오는 코드
+            //WriteDiary.java 에서 db에 넣은 date format은 yyyyMMdd
+            DbOpenHelper mDbOpenHelper = new DbOpenHelper(getActivity());
+            mDbOpenHelper.open();
+            mDbOpenHelper.create();
+
+            Cursor iCursor = mDbOpenHelper.selectColumns();
+            while(iCursor.moveToNext()){
+                String y = String.valueOf(year);
+                String m = String.valueOf(monthOfYear);
+                String d = String.valueOf(dayOfMonth);
+
+                String tempDate = iCursor.getString(iCursor.getColumnIndex("date"));
+
+                if(tempDate.equals(y+m+d)){
+                    String result = tempDate; // 어쩌고저쩌고 빨리 여기 수정하셈
+                }
+            }
+
         }
     };
+
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +79,7 @@ public class fragmentDiary  extends Fragment {
 
         //리사이클러뷰에 표시할 데이터 리스트 생성
         ArrayList<String> list = new ArrayList<>();
-        for(int i=0;i<3; i++)
+        for(int i=0;i<4; i++)
         {
             list.add(String.format("TEXT %d",i));
         }
@@ -74,6 +96,8 @@ public class fragmentDiary  extends Fragment {
         // return inflater.inflate(R.layout.fragment_diary, container, false);
         return rootView;
     }
+
+
 
 
 }

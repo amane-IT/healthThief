@@ -15,7 +15,7 @@
 
         <!--사진 크기 자동 조정해서 넣기-->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/FoodPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:layout_editor_absoluteX="235dp"
@@ -28,7 +28,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/menu1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
@@ -36,7 +36,7 @@
                 android:text="Name" />
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/menu2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
@@ -44,7 +44,7 @@
                 android:text="Name" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/menu3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
@@ -52,7 +52,7 @@
                 android:text="Name" />
 
             <EditText
-                android:id="@+id/editText7"
+                android:id="@+id/menu4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
@@ -60,7 +60,7 @@
                 android:text="Name" />
 
             <EditText
-                android:id="@+id/editText8"
+                android:id="@+id/menu5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
@@ -68,12 +68,6 @@
                 android:text="Name" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Menu Details" />
 
 
         <LinearLayout
@@ -83,18 +77,58 @@
 
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/totalCal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Total Calorie" />
 
-            <TextView
-                android:id="@+id/textView14"
+
+            <Button
+                android:id="@+id/menuDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Menu Details" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/mealType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_weight="1"
-                android:text="Calorie w. Health Color" />
+                >
+
+                <RadioButton
+                    android:id="@+id/breakfast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아침"
+                    android:layout_weight="0.3"/>
+
+                <RadioButton
+                    android:id="@+id/lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="점심"
+                    android:layout_weight="0.3"/>
+
+                <RadioButton
+                    android:id="@+id/dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="저녁"
+                    android:layout_weight="0.3"/>
+
+            </RadioGroup>
+
 
         </LinearLayout>
 
@@ -103,7 +137,7 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/diaryContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -113,24 +147,36 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent">
 
-            <Button
-                android:id="@+id/saveDiary"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="저장"/>
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
+                android:weightSum="1">
 
-            <Button
-                android:id="@+id/exitDiary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="취소"/>
+                <Button
+                    android:id="@+id/saveDiary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="저장"/>
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/exitDiary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:text="취소"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
 
     </LinearLayout>
