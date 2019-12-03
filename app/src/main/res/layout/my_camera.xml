@@ -30,8 +30,8 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_gravity="center"
-            android:maxWidth="128dp"
-            android:maxHeight="128dp"
+            android:maxWidth="300px"
+            android:maxHeight="300px"
             android:adjustViewBounds="true"
             android:src="@drawable/yummy"
             android:onClick="onClick"/>

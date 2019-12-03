@@ -30,6 +30,8 @@ public class fragmentSetting extends Fragment {
         TextView sexT = getActivity().findViewById(R.id.fsex);
 
         String name = intent.getStringExtra("setName");
+        // null 로 받아온다... 고칠 것
+        Log.d("이름", "my name : "+name);
         if(name != null) nameT.setText(name);
         String age = intent.getStringExtra("setAge");
         if(age != null) ageT.setText(age);
@@ -45,7 +47,7 @@ public class fragmentSetting extends Fragment {
             @Override
             public void onClick(View v){
                 Log.i("설정 변경 버튼","클릭함");
-                Intent intent = new Intent(getActivity(),setProfile.class);
+                Intent intent = new Intent(getActivity(),changeProfile.class);
                 startActivity(intent);
             }
 

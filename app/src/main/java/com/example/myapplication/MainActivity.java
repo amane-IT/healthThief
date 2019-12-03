@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,10 +31,8 @@ public class MainActivity extends AppCompatActivity{
         SharedPreferences pref = getSharedPreferences("IsFirst", Activity.MODE_PRIVATE);
         boolean isFirst = pref.getBoolean("isFirst",false);
         if(!isFirst){
-            //최초 실행시 permissions 확인
-            checkDangerousPermissions();
             // 최초 실행시 프로필 작성
-            Intent goProfile = new Intent(this, WriteDiary.class);
+            Intent goProfile = new Intent(this, setProfile.class);
             startActivity(goProfile);
 
             SharedPreferences.Editor editor = pref.edit();
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity{
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
 
         CheckAppFirstExecute();
+        checkDangerousPermissions();
     }
 
     // bottomNavigationView의 아이템이 선택될 때 호출될 리스너 등록
@@ -105,10 +105,9 @@ public class MainActivity extends AppCompatActivity{
         }
 
         if (permissionCheck == PackageManager.PERMISSION_GRANTED){
-            Toast.makeText(this, "권한 있음", Toast.LENGTH_LONG).show();
+            Log.i("PERMISSION","권한 있음");
         } else {
-            Toast.makeText(this,"권한없음",Toast.LENGTH_LONG).show();
-
+            Log.i("PERMISSION","권한 없음");
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,permissions[0])){
                 Toast.makeText(this, "권한 설명 필요함", Toast.LENGTH_LONG).show();
             } else {
@@ -122,9 +121,9 @@ public class MainActivity extends AppCompatActivity{
         if (requestCode ==1 ){
             for (int i=0; i<permissions.length; i++){
                 if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this, permissions[i]+"권한이 승인됨", Toast.LENGTH_LONG).show();
+                    Log.i("PERMISSION",permissions[i]+"권한이 승인됨");
                 } else {
-                    Toast.makeText(this,permissions[i]+"권한이 승인되지 않음",Toast.LENGTH_LONG).show();
+                    Log.i("PERMISSION",permissions[i]+"권한이 승인되지 않음");
                 }
             }
         }

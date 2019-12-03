@@ -2,6 +2,9 @@ package com.example.myapplication;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,43 +32,65 @@ public class fragmentDiary  extends Fragment {
     Button dateBt;
     DbOpenHelper mDbOpenHelper;
 
+    TextView none;
+    RecyclerView recyclerView;
+
+
     // DB에 날짜에 해당하는 data가 있는지 확인한다.
     // data가 있으면 recyclerview에 뿌리고 없으면 없다고 함
-    public void getDiaryData(String data){
+    public void getDiaryData(String date){
+
+        none = getActivity().findViewById(R.id.noData);
+        recyclerView = getActivity().findViewById(R.id.recycler);
 
         //WriteDiary.java 에서 db에 넣은 date format은 yyyyMMdd
         mDbOpenHelper = new DbOpenHelper(getActivity());
         mDbOpenHelper.open();
         mDbOpenHelper.create();
 
+        int col = 0;
+
+        // 테이블 모든 행 선택
         Cursor iCursor = mDbOpenHelper.selectColumns();
+
         while(iCursor.moveToNext()){
             String tempDate = iCursor.getString(iCursor.getColumnIndex("date"));
+            /*
             String tempMeal = iCursor.getString(iCursor.getColumnIndex("meal"));
             String tempFood = iCursor.getString(iCursor.getColumnIndex("food"));
             String tempCal = iCursor.getString(iCursor.getColumnIndex("calorie"));
             String tempContent = iCursor.getString(iCursor.getColumnIndex("content"));
-            if(tempDate.equals(data)){
-
+            */
+            if(tempDate.equals(date)){
+                col++;
                 //리사이클러뷰에 표시할 데이터 리스트 생성
                 //디폴트로 오늘의 다이어리 데이터 가져오기
                 ArrayList<String> list = new ArrayList<>();
                     list.add(String.format(tempDate));
                 //리사이클러뷰에 linearlayoutmanager 객체 지정
-                RecyclerView recyclerView = rootView.findViewById((R.id.recycler));
+               // RecyclerView recyclerView = rootView.findViewById((R.id.recycler));
                 //해당 fragment를 관리하는 activity를 리턴하는 함수는 getActivity - this 역할
                 recyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
 
                 //리사이클러뷰에 simpleTextAdapter 객체 지정
                 RecyclerviewItemAdapter adapter = new RecyclerviewItemAdapter(list);
                 recyclerView.setAdapter((adapter));
-
             }
+        }
+
+        if(col==0){
+            none.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        }
+        else{
+            none.setVisibility(View.INVISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
 
     }
 
-    // 날짜를 지정하면 getDiaryData를 통해
+    // 날짜를 지정하면 getDiaryData를 통해 버튼에 오늘의 날짜를 보여준다.
+    // 그리고 날짜에 해당하는 db 서치 함수 실행
     public DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener(){
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){

@@ -10,23 +10,23 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+public class changeProfile extends AppCompatActivity{
 
-// set_profile.xml에 표시된 프로필을 작성하고 '시작하기' 버튼을 클릭하면 fragmentSetting.java로 데이터가 이동한다.
-// 이후 fragmentSetting의 정보를 수정할때도 setProfile.java가 실행된다.
-public class setProfile extends AppCompatActivity{
 
-    Button start;
+    Button change;
+    Button cancle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.set_profile);
+        setContentView(R.layout.change_profile);
 
-        final Intent intent = new Intent(setProfile.this, fragmentSetting.class);
-        final Intent Home = new Intent(this, MainActivity.class);
+        final Intent intent = new Intent(changeProfile.this, fragmentSetting.class);
 
-        start = (Button)findViewById(R.id.startFoodiary);
-        start.setOnClickListener(new View.OnClickListener() {
+        change = (Button)findViewById(R.id.fixDone);
+        cancle = (Button)findViewById(R.id.fixCancle);
+
+        change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("setProfile","BUTTON_CLICKED");
@@ -49,12 +49,17 @@ public class setProfile extends AppCompatActivity{
                         }
                     }
                 };
-
-                Home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Home.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(Home);
                 finish();
             }
         });
+
+        cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
+
 }

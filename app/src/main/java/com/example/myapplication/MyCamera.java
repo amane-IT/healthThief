@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -53,6 +55,9 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_camera);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().setFormat(PixelFormat.UNKNOWN);
+
         //db_manager = new DB_Manager();
 
         iv_food = (ImageView)findViewById(R.id.food_image);
@@ -66,7 +71,6 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
             return;
         }
 
-        //왜 안되,,
 
         HttpMgrThread httpThread = new HttpMgrThread();
         httpThread.reqHttp();
@@ -199,7 +203,9 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void setImage() {
-        ImageResizeUtils.resizeFile(tempFile, tempFile, 300, isCamera);
+
+        //크롭할 때 이미 리사이즈 하지 않았나? >> 없어도 됨!
+       //ImageResizeUtils.resizeFile(tempFile, tempFile, 300, isCamera);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
@@ -221,7 +227,9 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
         if(id_view == R.id.savePic) {
             //SharedPreferences prefs = getSharedPreferences()
             //이미지 저장하고 서버로 보내자
-
+            //그리고 다이어리 작성창 실행
+            Intent intent = new Intent(this, WriteDiary.class);
+            startActivity(intent);
         }
         else if(id_view == R.id.picBtn)
         {
@@ -262,6 +270,7 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
+    // 크롭된 이미지 저장
     private  void storeCropImage(Bitmap bitmap, String filePath){
         String dirPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/foodiary";
         File directory = new File(dirPath);

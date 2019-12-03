@@ -7,6 +7,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import static com.example.myapplication.DataBases.CreateDB._TABLENAME0;
 
 public class DbOpenHelper {
@@ -55,7 +58,7 @@ public class DbOpenHelper {
 
 
     // insert data
-    public long insertColum(String date, String meal, String food, String calorie, String carbon, String protein, String fat, String diary){
+    public long insertColumn(String date, String meal, String food, String calorie, String carbon, String protein, String fat, String diary){
         ContentValues values = new ContentValues();
         values.put(DataBases.CreateDB.DATE, date);
         values.put(DataBases.CreateDB.MEAL, meal);
