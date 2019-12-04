@@ -31,68 +31,69 @@ public class fragmentDiary  extends Fragment {
     ImageButton camBt;
     Button dateBt;
 
+
     private DbHelper DbHelper;
-    RecyclerView rvDiary;
+    String dbName;
+    ArrayList<Diary> diaryList;
+    RecyclerView recyclerView;
+    DiaryListAdapter diaryListAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
-
-    // 날짜를 지정하면 getDiaryData를 통해 버튼에 오늘의 날짜를 보여준다.
-    // 그리고 날짜에 해당하는 db 서치 함수 실행
-    public DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener(){
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
-            int month = monthOfYear+1;
-            dateBt.setText(year+"년 "+month+"월 "+dayOfMonth+"일");
-
-            SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-            Calendar time = Calendar.getInstance();
-            String date = f.format(time.getTime());
-
-            Log.i("CHOOSEN DATE : ",date);
-            getDiaryData(date);
-
-        }
-    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        diaryListAdapter = new DiaryListAdapter(diaryList, getActivity());
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstaceState){
-        super.onActivityCreated(savedInstaceState);
-    }
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        // initialize
         rootView = inflater.inflate(R.layout.fragment_diary,container,false);
         camBt = rootView.findViewById(R.id.diarayCam);
         dateBt = rootView.findViewById(R.id.chooseDate);
-        rvDiary = rootView.findViewById(R.id.recycler);
 
-        // default 로 버튼엔 오늘 날짜가 적힌다.
+        //디비 생성
+        if (DbHelper == null){
+            dbName = "foodiaryDB";
+            DbHelper = new DbHelper(getActivity(),"TEST",null,DbHelper.DB_VERSION);
+            DbHelper.testDB();
+        }
+
         SimpleDateFormat format = new SimpleDateFormat ("yyyy년 MM월 dd일");
         SimpleDateFormat format2 = new SimpleDateFormat("yyyyMMdd");
+        //현재 날짜 가져옴
         Calendar time = Calendar.getInstance();
+        //디폴트 - 오늘 날짜의 버튼
         String format_time = format.format(time.getTime());
-        String format_time2 = format2.format(time.getTime());
-        getDiaryData(format_time2);
         dateBt.setText(format_time);
+        //디폴트 - 오늘 날짜의 다이어리 목록
+        String format_time2 = format2.format(time.getTime());
+        int ft2 = Integer.parseInt(format_time2);
+        diaryList = DbHelper.getDiaryDataByDate(ft2);
+        if(diaryList.size()==0){
+            Log.i("DIART DATA : ","EMPTY!");
+            Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
+        }
 
-        /** 디비 생성*/
-        String dbname = "foodiaryDB";
-        DbHelper = new DbHelper(getActivity(),dbname,null,1);
-        DbHelper.testDB();
+        // RecyclerView
+        // obtain handle, connect to layout manager, attach adapter for the data to be displayed
+        recyclerView = rootView.findViewById(R.id.recycler);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+        diaryListAdapter = new DiaryListAdapter(diaryList,getActivity());
+        recyclerView.setAdapter(diaryListAdapter);
 
+        // Button Click Event
         dateBt.setOnClickListener(new View.OnClickListener(){
             // fragment_diary 의 최상단 버튼을 클릭하면 날짜를 선택할 수 있다.
             @Override
             public void onClick(View v)
             {
                 Log.i("Diary BUTTON","Date Picking");
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, 2019, 12, 01);
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, 2019, 11, 01);
                 dialog.show();
             }
         });
@@ -106,79 +107,41 @@ public class fragmentDiary  extends Fragment {
             }
         });
 
-                // return inflater.inflate(R.layout.fragment_diary, container, false);
+        // return inflater.inflate(R.layout.fragment_diary, container, false);
         return rootView;
     }
 
+    // 선택한 날짜로 버튼 이름이 바뀜
+    // 그리고 날짜에 해당하는 getDiaryData 실행
+    public DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener(){
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth){
+            int month = monthOfYear+1;
+            String y = String.valueOf(year);
+            String m = String.valueOf(month);
+            String d = String.valueOf(dayOfMonth);
+            String date = y+m+d;
+            Log.i("CHOOSEN DATE : ",date);
+            dateBt.setText(year+"년 "+month+"월 "+dayOfMonth+"일");
+            getDiaryData(date);
+        }
+    };
 
     // DB에 날짜에 해당하는 data가 있는지 확인한다.
     // data가 있으면 recyclerview에 뿌리고 없으면 없다고 함
     public void getDiaryData(String date){
         Log.i("GET DIARY DATA","START");
         int d = Integer.parseInt(date);
-        if (DbHelper == null){
-            DbHelper = new DbHelper(getActivity(),"TEST",null,DbHelper.DB_VERSION);
-        }
-
-        ArrayList<Diary> diaryList = DbHelper.getDiaryDataByDate(d);
+        diaryList = DbHelper.getDiaryDataByDate(d);
         if(diaryList.size()==0){
             Log.i("DIART DATA : ","EMPTY!");
             Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
         }
         else {
-            rvDiary.setAdapter(new DiaryListAdapter(diaryList));
-            rvDiary.setLayoutManager(new LinearLayoutManager(getActivity()));
-            rvDiary.setVisibility(View.VISIBLE);
+            diaryListAdapter = new DiaryListAdapter(diaryList,getActivity());
+            recyclerView.setAdapter(diaryListAdapter);
         }
         Log.i("GET DIARY DATA","END");
-
-        /*
-
-        //WriteDiary.java 에서 db에 넣은 date format은 yyyyMMdd
-        mDbOpenHelper = new DbOpenHelper(getActivity());
-        mDbOpenHelper.open();
-        mDbOpenHelper.create();
-
-        // 추출된 col 갯수 확인
-        int col = 0;
-
-        // 테이블 모든 행 선택
-        Cursor iCursor = mDbOpenHelper.selectColumns();
-
-        while(iCursor.moveToNext()){
-            String tempDate = iCursor.getString(iCursor.getColumnIndex("date"));
-
-            String tempMeal = iCursor.getString(iCursor.getColumnIndex("meal"));
-            String tempFood = iCursor.getString(iCursor.getColumnIndex("food"));
-            String tempCal = iCursor.getString(iCursor.getColumnIndex("calorie"));
-            String tempContent = iCursor.getString(iCursor.getColumnIndex("content"));
-
-            if(tempDate.equals(date)){
-                col++;
-                //리사이클러뷰에 표시할 데이터 리스트 생성
-                //디폴트로 오늘의 다이어리 데이터 가져오기
-                ArrayList<String> list = new ArrayList<>();
-                for(int i=0;i<3;i++) {
-                    list.add(String.format("TEXT %d",i));
-                }
-                //리사이클러뷰에 linearlayoutmanager 객체 지정
-                //해당 fragment를 관리하는 activity를 리턴하는 함수는 getActivity - this 역할
-                recyclerView = rootView.findViewById(R.id.recycler);
-                recyclerView.setLayoutManager(new LinearLayoutManager((getActivity())));
-
-                //리사이클러뷰에 simpleTextAdapter 객체 지정
-                RecyclerviewItemAdapter adapter = new RecyclerviewItemAdapter(list);
-                recyclerView.setAdapter((adapter));
-            }
-        }
-
-        if(col==0){
-        }
-        else{
-            String colnum = Integer.toString(col);
-            Log.i("COL NUMBER: ",colnum);
-        }
-    */
     }
 
 
