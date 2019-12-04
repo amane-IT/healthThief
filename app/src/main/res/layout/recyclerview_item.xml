@@ -21,7 +21,7 @@
     android:paddingLeft="10dp">
 
     <ImageView
-        android:id="@+id/image1"
+        android:id="@+id/itemImage"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.6"
@@ -36,21 +36,21 @@
 
 
         <TextView
-            android:id="@+id/time"
+            android:id="@+id/itemMeal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:text="Time you eat"/>
 
         <TextView
-            android:id="@+id/foodMenu"
+            android:id="@+id/itemFood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:text="Food you eat"/>
 
         <TextView
-            android:id="@+id/calorie"
+            android:id="@+id/itemCal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18sp"

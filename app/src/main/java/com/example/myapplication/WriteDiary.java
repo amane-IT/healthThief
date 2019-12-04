@@ -35,7 +35,9 @@ public class WriteDiary extends AppCompatActivity {
     String cal;
     String content;
     RadioGroup rg;
-    private DbOpenHelper mDbOpenHelper;
+    //private DbOpenHelper mDbOpenHelper;
+
+    private DbHelper DbHelper;
 
 
     @Override
@@ -46,16 +48,21 @@ public class WriteDiary extends AppCompatActivity {
 
         save= findViewById(R.id.saveDiary);
         exit= findViewById(R.id.exitDiary);
+
         meal = null;
         edit_food = findViewById(R.id.menu1);
         text_cal = findViewById(R.id.totalCal);
         edit_content = findViewById(R.id.diaryContent);
         rg = findViewById(R.id.mealType);
         oDialog = new AlertDialog.Builder(this);
+
+
+        /*
         // 디비 열어놓음
         mDbOpenHelper = new DbOpenHelper(this);
         mDbOpenHelper.open();
         mDbOpenHelper.create();
+         */
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -78,8 +85,22 @@ public class WriteDiary extends AppCompatActivity {
                 food = edit_food.getText().toString();
                 cal = text_cal.getText().toString();
                 content = edit_content.getText().toString();
-                if(food.equals("") || content.equals("")){ food = null; content = null;}
+                Log.i("CHECK INFO YOU WROTE : ",date+", "+food+", "+cal+", "+content);
 
+                if(DbHelper == null){
+                    DbHelper = new DbHelper(WriteDiary.this,"TEST",null,DbHelper.DB_VERSION);
+                }
+                Diary diary = new Diary();
+                diary.setDate(date);
+                diary.setMeal(meal);
+                diary.setFood(food);
+                diary.setCal(cal);
+                diary.setDiary(content);
+                DbHelper.insertDiary(diary);
+
+
+                /*
+                if(food.equals("") || content.equals("")){ food = null; content = null;}
                 mDbOpenHelper.open();
                 long insertCheck = mDbOpenHelper.insertColumn(date,meal,food,cal,null,null,null,content);
                 String c = Long.toString(insertCheck);
@@ -96,6 +117,8 @@ public class WriteDiary extends AppCompatActivity {
 
                 setInsertMode();
                 mDbOpenHelper.close();
+                 */
+
                 goHome();
             }
         });
