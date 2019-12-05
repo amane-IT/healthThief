@@ -1,10 +1,6 @@
 package com.example.myapplication;
 import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +19,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import static android.app.Activity.RESULT_OK;
 
 
 // 날짜별 다이어리 리스트(간소화된 정보)를 보여준다.
@@ -76,6 +74,10 @@ public class fragmentDiary  extends Fragment {
             Log.i("DIART DATA : ","EMPTY!");
             Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
         }
+        else{
+            Log.i("DIART DATA : ","NOT EMPTY!");
+            Toast.makeText(getContext(),"data list set!",Toast.LENGTH_SHORT).show();
+        }
 
         // RecyclerView
         // obtain handle, connect to layout manager, attach adapter for the data to be displayed
@@ -85,6 +87,7 @@ public class fragmentDiary  extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         diaryListAdapter = new DiaryListAdapter(diaryList,getActivity());
         recyclerView.setAdapter(diaryListAdapter);
+        diaryListAdapter.notifyDataSetChanged();
 
         // Button Click Event
         dateBt.setOnClickListener(new View.OnClickListener(){
@@ -104,8 +107,10 @@ public class fragmentDiary  extends Fragment {
                 Log.i("Diary Cam","Start Camera");
                 Intent intent = new Intent(getActivity(),MyCamera.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
+
 
         // return inflater.inflate(R.layout.fragment_diary, container, false);
         return rootView;
@@ -119,7 +124,9 @@ public class fragmentDiary  extends Fragment {
             int month = monthOfYear+1;
             String y = String.valueOf(year);
             String m = String.valueOf(month);
+            if(month<10){m= "0"+m;}
             String d = String.valueOf(dayOfMonth);
+            if(dayOfMonth<10){d="0"+d;}
             String date = y+m+d;
             Log.i("CHOOSEN DATE : ",date);
             dateBt.setText(year+"년 "+month+"월 "+dayOfMonth+"일");
@@ -134,16 +141,23 @@ public class fragmentDiary  extends Fragment {
         int d = Integer.parseInt(date);
         diaryList = DbHelper.getDiaryDataByDate(d);
         if(diaryList.size()==0){
-            Log.i("DIART DATA : ","EMPTY!");
+            changeData(diaryList);
+            Log.i("DIARY DATA : ","EMPTY!");
             Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
         }
         else {
-            diaryListAdapter = new DiaryListAdapter(diaryList,getActivity());
-            recyclerView.setAdapter(diaryListAdapter);
+            changeData(diaryList);
         }
         Log.i("GET DIARY DATA","END");
     }
 
+    // 데이터 바뀌었을 때 사용
+    public void changeData(ArrayList<Diary> diaryList) {
+        diaryListAdapter.clear();
+        diaryListAdapter = new DiaryListAdapter(diaryList,getActivity());
+        recyclerView.setAdapter(diaryListAdapter);
+        diaryListAdapter.notifyDataSetChanged();
+    }
 
 }
 

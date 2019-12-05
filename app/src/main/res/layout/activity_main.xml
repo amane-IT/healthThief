@@ -7,22 +7,6 @@
     tools:context=".MainActivity">
 
     <!--메인 홈 하단메뉴 여기에-->
-    <!-- https://lktprogrammer.tistory.com/183 -->
-
-    <!-- 카메라는 새 창 만드는 쪽으로 하기로 해서 주석 처리함요
-    <Button
-        android:id="@+id/picBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="pic" />
-
-    <SurfaceView
-        android:id="@+id/viewer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-        -->
-
 
     <FrameLayout
         android:id="@+id/frameLayout"

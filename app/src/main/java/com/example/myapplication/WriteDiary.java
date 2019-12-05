@@ -56,14 +56,6 @@ public class WriteDiary extends AppCompatActivity {
         rg = findViewById(R.id.mealType);
         oDialog = new AlertDialog.Builder(this);
 
-
-        /*
-        // 디비 열어놓음
-        mDbOpenHelper = new DbOpenHelper(this);
-        mDbOpenHelper.open();
-        mDbOpenHelper.create();
-         */
-
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -90,6 +82,7 @@ public class WriteDiary extends AppCompatActivity {
                 if(DbHelper == null){
                     DbHelper = new DbHelper(WriteDiary.this,"TEST",null,DbHelper.DB_VERSION);
                 }
+                // DB에 새 다이어리 data 삽입
                 Diary diary = new Diary();
                 diary.setDate(date);
                 diary.setMeal(meal);
@@ -98,28 +91,7 @@ public class WriteDiary extends AppCompatActivity {
                 diary.setDiary(content);
                 DbHelper.insertDiary(diary);
 
-
-                /*
-                if(food.equals("") || content.equals("")){ food = null; content = null;}
-                mDbOpenHelper.open();
-                long insertCheck = mDbOpenHelper.insertColumn(date,meal,food,cal,null,null,null,content);
-                String c = Long.toString(insertCheck);
-                if(insertCheck != -1){
-                    mDbOpenHelper.insertColumn(date,meal,food,cal,null,null,null,content);
-                    Toast.makeText(getApplicationContext(),"다이어리 저장 성공!",Toast.LENGTH_SHORT).show();
-                    Log.i("INSERTED COLUMN","["+date+","+meal+","+food+","+cal+","+content+"]"+c); }
-                else { Toast.makeText(getApplicationContext(), "저장 실패",Toast.LENGTH_SHORT).show();
-                    Log.i("WRONG INSERTED COLUMN","["+date+","+meal+","+food+","+cal+","+content+"]"+c); }
-
-                int num = mDbOpenHelper.selectColumns().getCount();
-                String nums = Integer.toString(num);
-                Log.i("TOTAL RECORD",nums);
-
-                setInsertMode();
-                mDbOpenHelper.close();
-                 */
-
-                goHome();
+               goHome();
             }
         });
 

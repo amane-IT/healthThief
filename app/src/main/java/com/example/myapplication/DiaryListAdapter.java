@@ -32,7 +32,6 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
         ViewHolder vh = new ViewHolder(v);
         return vh;
-
     }
 
     // position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시
@@ -49,12 +48,21 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return this.diaryList.size();
     }
 
+    // 데이터 목록 지우기
+    public void clear(){
+        int size = diaryList.size();
+        diaryList.clear();
+        notifyItemRangeRemoved(0,size);
+    }
+
+
     //아이템 뷰를 저장하는 뷰 홀더 클래스
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView image;
         public TextView meal;
         public TextView food;
         public TextView cal;
+        public TextView unit;
 
         public ViewHolder(View itemView){
             super(itemView);
@@ -62,6 +70,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             meal = itemView.findViewById(R.id.itemMeal);
             food = itemView.findViewById(R.id.itemFood);
             cal = itemView.findViewById(R.id.itemCal);
+            unit = itemView.findViewById(R.id.itemCalUnit);
         }
 
 
@@ -70,9 +79,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             meal.setText(item.getMeal());
             food.setText(item.getFood());
             cal.setText(item.getCal());
-    }
-
-
-
+            unit.setText("Kcal");
+         }
     }
 }

@@ -169,8 +169,7 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
                 break;
             }
 
-            case PICK_FROM_CAMERA:
-            {
+            case PICK_FROM_CAMERA: {
                 Uri photoUri = Uri.fromFile(tempFile);
                 cropImage(photoUri);
                 break;
@@ -179,6 +178,9 @@ public class MyCamera extends AppCompatActivity implements View.OnClickListener{
                 File cropFile = new File(Crop.getOutput(data).getPath());
                 setImage();
             }
+
+            break;
+            default:
         }
     }
 
