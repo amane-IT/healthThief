@@ -1,24 +1,57 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="45sp"
+        android:layout_gravity="center"
+        android:text="CHOOSE REPORT"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
 
-
-        <TextView
+        <Button
+            android:id="@+id/getGraph"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="그래프 레포트 페이지"
+            android:text="Graph"
+            android:textSize="50sp"
             android:padding="30dp"
-            android:textSize="30dp"/>
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getMonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Month"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getTrend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trend"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:layout_marginBottom="20dp"/>
+
 
     </LinearLayout>
 
 
+</LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+    <!--제네크 내가 너를 미치도록 사랑해애애애ㅐㅐㅐㄱ-->
+
+

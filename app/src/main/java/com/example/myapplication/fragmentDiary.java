@@ -20,8 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static android.app.Activity.RESULT_OK;
-
 
 // 날짜별 다이어리 리스트(간소화된 정보)를 보여준다.
 public class fragmentDiary  extends Fragment {

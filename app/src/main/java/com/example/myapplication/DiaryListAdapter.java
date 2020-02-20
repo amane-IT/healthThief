@@ -22,6 +22,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * 생성자
      * @param diaryList
      */
+
     public DiaryListAdapter(ArrayList<Diary> diaryList, Context context) {
         this.diaryList=diaryList;
         this.context=context;

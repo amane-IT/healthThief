@@ -30,6 +30,7 @@ public class WriteDiary extends AppCompatActivity {
     TextView text_cal;
     EditText edit_content;
     AlertDialog.Builder oDialog;
+
     String meal;
     String food;
     String cal;

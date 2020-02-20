@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-// 기본 정보 관리
+// 다이어리 기본 정보 관리
 public class Diary {
 
     //PK

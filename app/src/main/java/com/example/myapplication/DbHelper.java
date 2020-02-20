@@ -13,12 +13,13 @@ import java.util.ArrayList;
 public class DbHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final int DB_VERSION = 3; //DB onCreate String s 바뀔시 숫자 up
+    public static final int DB_VERSION = 5; //DB onCreate String s 바뀔시 숫자 up
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version){
         super(context,name,factory,version);
         this.context = context;
     }
+
 
     @Override
     public void onCreate(SQLiteDatabase db){
@@ -32,11 +33,25 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" DIARY STRING NOT NULL )";
 
         db.execSQL(s);
-        Toast.makeText(context,"Table Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Diary Table Created",Toast.LENGTH_SHORT).show();
+
+        String s2;
+        s2 = " CREATE TABLE IF NOT EXISTS INFODB ( "
+                +" _ID INTEGER PRIMARY KEY AUTOINCREMENT, "
+                +" NAME STRING NOT NULL, "
+                +" AGE INTEGER NOT NULL, "
+                +" WEIGHT INTEGER NOT NULL, "
+                +" SEX INTEGER NOT NULL, "
+                +" SCAL INTEGER NOT NULL )";
+        db.execSQL(s2);
+        Toast.makeText(context,"Info Table Created",Toast.LENGTH_SHORT).show();
+
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         Toast.makeText(context, "버전이 올라갔습니다.", Toast.LENGTH_SHORT).show();
+
+
     }
 
 
@@ -59,8 +74,28 @@ public class DbHelper extends SQLiteOpenHelper {
                 diary.getCal(),
                 diary.getDiary()});
         Log.i("DIARY DATA INSERT : ","SUCCESS");
-        Toast.makeText(context,"Insert 완료",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"Diary Insert 완료",Toast.LENGTH_SHORT).show();
     }
+
+    public void insertInfo(Info info){
+
+        SQLiteDatabase db = getWritableDatabase();
+        String s;
+        s = " INSERT INTO INFODB ( "
+                + " NAME, AGE, WEIGHT, SEX, SCAL )"
+                + " VALUES ( ?, ?, ?, ?, ? )";
+
+        db.execSQL(s,new Object[]{
+                info.getMyName(),
+                info.getAge(),
+                info.getWeight(),
+                info.getSex(),
+                info.getScal()});
+        Log.i("INFO DATA INSERT : ","SUCCESS");
+        Toast.makeText(context,"Info Insert 완료",Toast.LENGTH_SHORT).show();
+
+    }
+
 
     // 해당 날짜가 가진 모든 diary의  데이터(날짜/아점저/음식/칼로리)를 가져오는 메소드
     public ArrayList<Diary> getDiaryDataByDate(int data){
@@ -85,7 +120,38 @@ public class DbHelper extends SQLiteOpenHelper {
 
             diaryList.add(diary);
         }
+        cursor.close();
         return diaryList;
+    }
+
+    public ArrayList<Info> getInfoData(){
+        String s;
+        s = " SELECT NAME, AGE, WEIGHT, SEX, SCAL FROM INFODB WHERE _ID = 0";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(s,null);
+        ArrayList<Info> infoList = new ArrayList<>();
+        Info info = null;
+
+        while(cursor.moveToNext()){
+            info = new Info();
+            /*
+            Log.i("DIARY DATA : ", cursor.getString(0));
+            Log.i("DIARY DATA : ", cursor.getString(1));
+            Log.i("DIARY DATA : ", cursor.getString(2));
+            Log.i("DIARY DATA : ", cursor.getString(3));
+             */
+            info.setMyName(cursor.getString(0));
+            info.setAge(cursor.getInt(1));
+            info.setWeight(cursor.getInt(2));
+            info.setSex(cursor.getInt(3));
+            info.setScal(cursor.getInt(4));
+
+            infoList.add(info);
+            cursor.close();
+        }
+
+        Log.i("GET INFO DATA: ","SUCCESS");
+        return infoList;
     }
 
 }

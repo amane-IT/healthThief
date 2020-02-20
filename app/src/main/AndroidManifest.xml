@@ -19,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,6 +48,9 @@
         <activity android:name=".MyCamera"></activity>
         <activity android:name=".WriteDiary"></activity>
         <activity android:name=".setProfile"></activity>
+        <activity android:name=".getGraph"></activity>
+        <activity android:name=".getTrend"></activity>
+        <activity android:name=".getMonthly"></activity>
 
     </application>
 

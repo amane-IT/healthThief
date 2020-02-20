@@ -7,6 +7,6 @@
     -->
     <color name="colorPrimary">#248823</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#FAFAFA</color>
+    <color name="colorAccent">#000000</color>
     <color name="windowBackground">#FAFAFA</color>
 </resources>
