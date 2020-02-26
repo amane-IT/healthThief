@@ -16,6 +16,13 @@ public class changeProfile extends AppCompatActivity{
     Button change;
     Button cancle;
 
+    EditText ename;
+    EditText eage;
+    EditText eweight;
+    EditText eheight;
+    EditText esex;
+    int ecal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,17 +33,19 @@ public class changeProfile extends AppCompatActivity{
         change = (Button)findViewById(R.id.fixDone);
         cancle = (Button)findViewById(R.id.fixCancle);
 
+
+        // 변경 버튼을 클릭하면 내용이 바뀌었는지 체크하고 바뀌었다면 db에 새로 업데이트한다.
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("setProfile","BUTTON_CLICKED");
-                // 이름, 나이, 몸무게, 성별
-                EditText name = (EditText) findViewById(R.id.name);
-                intent.putExtra("setName",name.getText().toString());
-                EditText age = (EditText) findViewById(R.id.age);
-                intent.putExtra("setAge",age.getText().toString());
-                EditText weight = (EditText) findViewById(R.id.weight);
-                intent.putExtra("setWeight",weight.getText().toString());
+                Log.i("Change Profile","BUTTON_CLICKED");
+
+                // db에 원래 입력되어있던 정보를 가져와 edittext에 뿌린다
+                ename = findViewById(R.id.name);
+                eage = findViewById(R.id.age);
+                eweight = findViewById(R.id.weight);
+                eheight = findViewById(R.id.height);
+
 
                 RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener(){
                     @Override
@@ -49,6 +58,9 @@ public class changeProfile extends AppCompatActivity{
                         }
                     }
                 };
+
+
+
                 finish();
             }
         });
@@ -60,6 +72,13 @@ public class changeProfile extends AppCompatActivity{
             }
         });
 
+    }
+
+    public void checkChange(){
+
+
+
+        return;
     }
 
 }

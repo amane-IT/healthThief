@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:ems="4"
                 android:gravity="center"
-                android:hint="Name" />
+                android:hint="MENU" />
 
             <EditText
                 android:id="@+id/menu2"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:ems="4"
                 android:gravity="center"
-                android:hint="Name" />
+                android:hint="MENU" />
 
             <EditText
                 android:id="@+id/menu3"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:ems="4"
                 android:gravity="center"
-                android:hint="Name" />
+                android:hint="MENU" />
 
 
         </LinearLayout>
@@ -66,7 +66,7 @@
             <TextView
                 android:id="@+id/totalCal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:inputType="number"
                 android:text="1"
@@ -75,9 +75,9 @@
             <TextView
                 android:id="@+id/textCal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Kcal"
-                android:gravity="end"/>
+                android:gravity="center"/>
 
 
             <Button
@@ -152,6 +152,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:background="@drawable/default_green_bt"
                     android:text="저장"/>
 
                 <Button
@@ -159,6 +160,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
+                    android:background="@drawable/cancle_bt"
                     android:text="취소"/>
 
             </LinearLayout>

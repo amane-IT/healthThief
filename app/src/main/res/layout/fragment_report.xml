@@ -26,6 +26,7 @@
             android:text="Graph"
             android:textSize="50sp"
             android:padding="30dp"
+            android:background="@drawable/default_green_bt"
             android:layout_marginBottom="20dp"/>
 
         <Button
@@ -35,6 +36,7 @@
             android:text="Month"
             android:textSize="50sp"
             android:padding="30dp"
+            android:background="@drawable/default_green_bt"
             android:layout_marginBottom="20dp"/>
 
         <Button
@@ -44,6 +46,7 @@
             android:text="Trend"
             android:textSize="50sp"
             android:padding="30dp"
+            android:background="@drawable/default_green_bt"
             android:layout_marginBottom="20dp"/>
 
 

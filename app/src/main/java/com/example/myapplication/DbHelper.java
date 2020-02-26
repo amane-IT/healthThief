@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DbHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final int DB_VERSION = 5; //DB onCreate String s 바뀔시 숫자 up
+    public static final int DB_VERSION = 6; //DB onCreate String s 바뀔시 숫자 up
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version){
         super(context,name,factory,version);
@@ -41,6 +41,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" NAME STRING NOT NULL, "
                 +" AGE INTEGER NOT NULL, "
                 +" WEIGHT INTEGER NOT NULL, "
+                +" HEIGHT INTEGER NOT NULL, "
                 +" SEX INTEGER NOT NULL, "
                 +" SCAL INTEGER NOT NULL )";
         db.execSQL(s2);
@@ -82,13 +83,14 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String s;
         s = " INSERT INTO INFODB ( "
-                + " NAME, AGE, WEIGHT, SEX, SCAL )"
-                + " VALUES ( ?, ?, ?, ?, ? )";
+                + " NAME, AGE, WEIGHT, HEIGHT, SEX, SCAL )"
+                + " VALUES ( ?, ?, ?, ?, ?,? )";
 
         db.execSQL(s,new Object[]{
                 info.getMyName(),
                 info.getAge(),
                 info.getWeight(),
+                info.getHeight(),
                 info.getSex(),
                 info.getScal()});
         Log.i("INFO DATA INSERT : ","SUCCESS");
@@ -126,7 +128,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public ArrayList<Info> getInfoData(){
         String s;
-        s = " SELECT NAME, AGE, WEIGHT, SEX, SCAL FROM INFODB WHERE _ID = 0";
+        s = " SELECT NAME, AGE, WEIGHT, HEIGHT, SEX, SCAL FROM INFODB WHERE _ID = 0";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(s,null);
         ArrayList<Info> infoList = new ArrayList<>();
@@ -143,8 +145,9 @@ public class DbHelper extends SQLiteOpenHelper {
             info.setMyName(cursor.getString(0));
             info.setAge(cursor.getInt(1));
             info.setWeight(cursor.getInt(2));
-            info.setSex(cursor.getInt(3));
-            info.setScal(cursor.getInt(4));
+            info.setHeight(cursor.getInt(3));
+            info.setSex(cursor.getInt(4));
+            info.setScal(cursor.getInt(5));
 
             infoList.add(info);
             cursor.close();

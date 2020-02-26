@@ -13,6 +13,32 @@
         <item name="android:background">@color/windowBackground</item>
         <item name="android:windowBackground">@color/windowBackground</item>
 
+        <item name="android:buttonStyle">@style/hannaButtonStyle</item>
+        <item name="android:editTextStyle">@style/hannaEditTextStyle</item>
+        <item name="android:radioButtonStyle">@style/hannaRadioButtonStyle</item>
+        <item name="android:checkboxStyle">@style/hannaCheckboxStyle</item>
+        <item name="android:textViewStyle">@style/hannaTextViewStyle</item>
+
     </style>
+
+
+    <style name="hannaTextViewStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/default_font</item>
+    </style>
+    <style name="hannaButtonStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/default_font</item>
+    </style>
+    <style name="hannaEditTextStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/default_font</item>
+    </style>
+    <style name="hannaRadioButtonStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/default_font</item>
+    </style>
+    <style name="hannaCheckboxStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/default_font</item>
+    </style>
+
+
+
 
 </resources>

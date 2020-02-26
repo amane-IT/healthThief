@@ -4,14 +4,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    >
 
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="40sp"
-    android:text="달력 요기엥"
-    android:gravity="center"/>
+    <Button
+        android:id="@+id/graphBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/default_green_bt"
+        android:text="back">
+
+    </Button>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GREAT"
+            android:textColor="@android:color/holo_green_dark"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NICE"
+            android:textColor="@android:color/holo_orange_light"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BAD"
+            android:textColor="@android:color/holo_red_dark"/>
+
+    </LinearLayout>
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"

@@ -16,12 +16,14 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
+            android:background="@drawable/default_green_bt"
             android:src="@drawable/mycam"/>
 
         <Button
             android:id="@+id/chooseDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/default_green_bt"
             android:text="Date you Pick"
             android:textSize="40sp"/>
 

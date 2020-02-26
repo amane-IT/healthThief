@@ -16,14 +16,15 @@ public class setProfile extends AppCompatActivity{
 
     Button start;
 
-    setProfile p = this;
     EditText edit_name;
     EditText edit_age;
     EditText edit_weight;
+    EditText edit_height;
 
     String db_name;
     int db_age;
     int db_weight;
+    int db_height;
     int db_sex = 0;
     int db_scal;
 
@@ -46,10 +47,12 @@ public class setProfile extends AppCompatActivity{
                 edit_name = (EditText) findViewById(R.id.name);
                 edit_age = (EditText) findViewById(R.id.age);
                 edit_weight = (EditText) findViewById(R.id.weight);
+                edit_height = (EditText) findViewById(R.id.height);
 
                 db_name = edit_name.getText().toString();
                 db_age = Integer.parseInt(edit_age.getText().toString());
                 db_weight = Integer.parseInt(edit_weight.getText().toString());
+                db_height = Integer.parseInt(edit_height.getText().toString());
 
 
                 RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener = new RadioGroup.OnCheckedChangeListener(){
@@ -64,7 +67,7 @@ public class setProfile extends AppCompatActivity{
                     }
                 };
 
-                db_scal = suggestCal(db_age,db_weight,db_sex);
+                db_scal = suggestCal(db_age,db_weight,db_height,db_sex);
 
                 if(DbHelper == null){
                     DbHelper = new DbHelper(setProfile.this,"TEST",null,DbHelper.DB_VERSION);
@@ -75,6 +78,7 @@ public class setProfile extends AppCompatActivity{
                 info.setMyName(db_name);
                 info.setAge(db_age);
                 info.setWeight(db_weight);
+                info.setHeight(db_height);
                 info.setSex(db_sex);
                 info.setScal(db_scal);
                 DbHelper.insertInfo(info);
@@ -90,11 +94,20 @@ public class setProfile extends AppCompatActivity{
 
     }
 
-    public int suggestCal(int a, int w, int s){
+    //권장 칼로리 계산
+    /*
+    여성: 655 + (9.6 x 체중(kg)) + (1.8 x 신장(cm)) -(4.7 x 나이)
+    남성: 66 + (13.7 x 체중(kg)) + (5 x 신장(cm)) -(6.5 x 나이)
+     */
+    public int suggestCal(int a, int w, int h, int s){
         int c=0;
 
-        // 권장 칼로리 계산... 아... 귀찮아...
-
+        if (s==1){
+            c = (int)(66 + (13.7*w)+(5*h)-(6.5*a));
+        }
+        else{
+            c = (int)(655+(9.6*w)+(1.8*h)-(4.7*a));
+        }
         return c;
     }
 }
