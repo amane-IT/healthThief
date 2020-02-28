@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="45sp"
+        android:layout_gravity="center"
+        android:text="CHOOSE REPORT"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <Button
+            android:id="@+id/getGraph"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Graph"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:background="@drawable/default_green_bt"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getMonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Month"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:background="@drawable/default_green_bt"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getTrend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trend"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:background="@drawable/default_green_bt"
+            android:layout_marginBottom="20dp"/>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
+
+    <!--제네크 내가 너를 미치도록 사랑해애애애ㅐㅐㅐㄱ-->
+
+

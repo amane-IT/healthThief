@@ -11,18 +11,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        tools:layout_editor_absoluteY="1dp"
+        android:gravity="center">
 
         <!--사진 크기 자동 조정해서 넣기-->
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="235dp"
-            tools:layout_editor_absoluteY="55dp"
-            tools:srcCompat="@tools:sample/avatars" />
+        <!--<ImageView
+            android:id="@+id/FoodPic"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:maxHeight="300px"
+            android:maxWidth="300px"
+            tools:src="@drawable/diaryfood_default"
+            android:src="@drawable/diaryfood_default"
+            android:layout_gravity="center"/>
+            -->
 
+        <android.support.v4.view.ViewPager
 
+            android:id="@+id/pager"
+            android:layout_width="300dp"
+            android:layout_height="300dp">
+
+        </android.support.v4.view.ViewPager>
 
 
         <LinearLayout
@@ -31,52 +41,31 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/menu1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:gravity="center"
+                android:hint="MENU" />
 
             <EditText
-                android:id="@+id/editText5"
+                android:id="@+id/menu2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:gravity="center"
+                android:hint="MENU" />
 
             <EditText
-                android:id="@+id/editText6"
+                android:id="@+id/menu3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
-                android:inputType="textPersonName"
-                android:text="Name" />
+                android:gravity="center"
+                android:hint="MENU" />
 
-            <EditText
-                android:id="@+id/editText7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="4"
-                android:inputType="textPersonName"
-                android:text="Name" />
-
-            <EditText
-                android:id="@+id/editText8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="4"
-                android:inputType="textPersonName"
-                android:text="Name" />
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/button3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Menu Details" />
 
 
         <LinearLayout
@@ -84,42 +73,115 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/totalCal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="number"
+                android:text="1"
+                android:gravity="center"/>
 
             <TextView
-                android:id="@+id/textView13"
+                android:id="@+id/textCal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Total Calorie" />
+                android:layout_height="match_parent"
+                android:text="Kcal"
+                android:gravity="center"/>
 
-            <TextView
-                android:id="@+id/textView14"
+
+            <Button
+                android:id="@+id/menuDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Calorie w. Health Color" />
+                android:layout_gravity="end"
+                android:text="Menu Details" />
 
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/editText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Diary Content" />
+            android:layout_height="wrap_content">
+
+            <RadioGroup
+                android:id="@+id/mealType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <RadioButton
+                    android:id="@+id/breakfast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아침"
+                    android:layout_weight="0.3"/>
+
+                <RadioButton
+                    android:id="@+id/lunch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="점심"
+                    android:layout_weight="0.3"/>
+
+                <RadioButton
+                    android:id="@+id/dinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="저녁"
+                    android:layout_weight="0.3"/>
+
+            </RadioGroup>
 
 
-        <!--클릭시 00월 00일 다이어리가 등록되었습니다! 토스트-->
-        <Button
-            android:id="@+id/button4"
+        </LinearLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Diary Done!" />
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/diaryContent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:hint="Diary Content"
+                android:gravity="top"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/saveDiary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/default_green_bt"
+                    android:text="저장"/>
+
+                <Button
+                    android:id="@+id/exitDiary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/cancle_bt"
+                    android:text="취소"/>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
 
 
     </LinearLayout>
 
 
+
 </android.support.constraint.ConstraintLayout>
+
