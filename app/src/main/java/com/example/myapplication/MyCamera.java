@@ -59,7 +59,7 @@ public class MyCamera extends AppCompatActivity {
 
     Bitmap originalBm;
 
-    String[][] foodData = new String[10][4];
+    String[][] foodData = new String[3][4];
     int i = 0;
     int kcal = 0;
 
@@ -238,9 +238,6 @@ public class MyCamera extends AppCompatActivity {
              * 다음 페이지로 넘어가기 전에 정보를 추가하는 걸로 하자
              * */
 
-
-
-
             /**
              * 추가할 음식을 물어보는 코드 */
             DialogInterface.OnClickListener add_data = new DialogInterface.OnClickListener() {
@@ -281,8 +278,8 @@ public class MyCamera extends AppCompatActivity {
                         .show();
             }
 
-            //음식 추가를 10개 이상하려 할 경우
-            else if(i >= 10)
+            //음식 추가를 3개 이상하려 할 경우
+            else if(i >= 3)
             {
                 new AlertDialog.Builder(this)
                         .setTitle("더이상 추가할 수 없습니다.")
@@ -290,8 +287,8 @@ public class MyCamera extends AppCompatActivity {
                         .show();
             }
 
-            //음식 추가는 임의로 10가지까지만..
-            else if (i < 10)
+            //음식 추가는 임의로 3가지까지만..
+            else if (i < 3)
             {
                 foodData[i][0] = Integer.toString(i);
                 foodData[i][1] = realPath;
@@ -303,45 +300,35 @@ public class MyCamera extends AppCompatActivity {
                 Log.d("이름: ", foodData[i][2]);
                 Log.d("칼로리: ", foodData[i][3]);
                 i++;
-            }
-            else
-            {
+
                 new AlertDialog.Builder(this)
                         .setTitle("더 추가하시겠습니까?")
                         .setPositiveButton("네", add_data)
                         .setNegativeButton("아니오", save_data)
                         .show();
             }
-
-
-
-
-            //txtResult.setText(results.toString());
-
-            //detectImage(testBitmap);
-
-            /*
-            //SharedPreferences prefs = getSharedPreferences()
-            //이미지 저장하고 서버로 보내자
-            //그리고 다이어리 작성창 실행
-            //Intent intent = new Intent(this, WriteDiary.class);
-            //startActivity(intent);
-            HttpFile httpFile = new HttpFile("http://192.168.137.1:8080/uploadimginfo.jsp", realPath);
-            httpFile.execute();
-            */
         }
 
         if(id_view == R.id.next)
         {
-            //커밋 되었으면..
-            Intent intent = new Intent(this, WriteDiary.class);
-            for (int j = 0; j >= i; i++)
+            Intent goDiary = new Intent(MyCamera.this, WriteDiary.class);
+            Log.d("넘어감: ", "간다");
+            for (int j = 0; j < i; j++)
             {
-                String key = "food_data" + Integer.toString(j);
-                intent.putExtra(key, foodData[j]);
+                String dkey = "food_image" + Integer.toString(j);
+                String nkey = "food_name" + Integer.toString(j);
+                String kkey = "food_kcal" + Integer.toString(j);
+                Log.d("foodData: ", foodData[j][2]);
+                Log.d("foodData: ", foodData[j][3]);
+                goDiary.putExtra(dkey, foodData[j][1]);
+                goDiary.putExtra(nkey, foodData[j][2]);
+                goDiary.putExtra(kkey, foodData[j][3]);
+                Log.d("넘어감: ", "간다");
             }
-            intent.putExtra("idx", i);
-            startActivity(intent);
+            goDiary.putExtra("idx", i);
+            startActivity(goDiary);
+            //startActivityForResult(intent, 1001);
+            Log.d("넘어감: ", "간다");
 
         }
         //else

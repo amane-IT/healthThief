@@ -84,7 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="다음"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:onClick="onClick"/>
 
         <TextView
             android:id="@+id/ML_result"

@@ -41,7 +41,7 @@ public class CustomAdapter extends PagerAdapter {
 
         //만들어진 View안에 있는 ImageView 객체 참조
         //위에서 inflated 되어 만들어진 view로부터 findViewById()를 해야 하는 것에 주의.
-        ImageView img= (ImageView)view.findViewById(R.id.img_viewpager_childimage);
+        ImageView img= (ImageView)view.findViewById(R.id.pager);
 
         //ImageView에 현재 position 번째에 해당하는 이미지를 보여주기 위한 작업
         //현재 position에 해당하는 이미지를 setting

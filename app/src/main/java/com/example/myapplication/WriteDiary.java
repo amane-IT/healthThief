@@ -2,7 +2,9 @@ package com.example.myapplication;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 // 카메랑 실행 이후 aws 에서 사진과 음식 이름(string)을 받으며 자동으로 실행됨 << 되는지 체크해야함!
@@ -36,6 +39,8 @@ public class WriteDiary extends AppCompatActivity {
     String cal;
     String content;
     RadioGroup rg;
+
+    ArrayList<Uri> imageList;
     //private DbOpenHelper mDbOpenHelper;
 
     private DbHelper DbHelper;
@@ -63,13 +68,27 @@ public class WriteDiary extends AppCompatActivity {
         String name = "";
         int kcal = 0;
         int idx = intent.getExtras().getInt("idx");
-        for (int i = 0; i <= idx; i++)
-        {
-            String[] foodData = intent.getExtras().getStringArray("foodData"+i);
-            name = name + ", "+ foodData[2];
-            kcal += Integer.parseInt(foodData[3]);
+        imageList = new ArrayList();
 
+        for (int i = 0; i < idx; i++)
+        {
+            String foodsource = intent.getExtras().getString("food_image"+i);
+            Uri imageUri = Uri.parse(foodsource);
+            imageList.add(imageUri);
+            String foodname = intent.getExtras().getString("food_name"+i);
+            String foodkcal = intent.getExtras().getString("food_kcal"+i);
+            if (i == 0)
+                name = foodname;
+            else
+                name = name + ", "+ foodname;
+            kcal += Integer.parseInt(foodkcal);
         }
+        edit_food.setText(name);
+        text_cal.setText(Integer.toString(kcal));
+
+        ViewPager viewPager = findViewById(R.id.pager);
+        viewPager.setClipToPadding(false);
+        viewPager.setAdapter(new Adapter(this, imageList));
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -139,6 +158,10 @@ public class WriteDiary extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+    }
+
+    private void initializeData() {
 
     }
 
