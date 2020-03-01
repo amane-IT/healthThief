@@ -11,6 +11,7 @@ public class Diary {
     private String food;
     private String cal;
     private String diary;
+    private String image;
 
     public int get_id(){ return _id; }
     public String getDate(){ return date;}
@@ -18,6 +19,7 @@ public class Diary {
     public String getFood(){ return food;}
     public String getCal(){ return cal;}
     public String getDiary(){ return diary;}
+    public String getImage() { return image;}
 
     public void set_id(int _id){ this._id = _id;}
     public void setDate(String date){ this.date = date;}
@@ -25,5 +27,7 @@ public class Diary {
     public void setFood(String food){this.food = food;}
     public void setCal(String cal){this.cal = cal;}
     public void setDiary(String diary){this.diary = diary;}
+    public void setImage(String image){this.image = image;}
+
 
 }

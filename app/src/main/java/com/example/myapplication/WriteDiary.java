@@ -38,9 +38,11 @@ public class WriteDiary extends AppCompatActivity {
     String food;
     String cal;
     String content;
+    int image;
     RadioGroup rg;
 
     ArrayList<Uri> imageList;
+    Adapter adapter;
     //private DbOpenHelper mDbOpenHelper;
 
     private DbHelper DbHelper;
@@ -59,6 +61,7 @@ public class WriteDiary extends AppCompatActivity {
         edit_food = findViewById(R.id.menu1);
         text_cal = findViewById(R.id.totalCal);
         edit_content = findViewById(R.id.diaryContent);
+
         rg = findViewById(R.id.mealType);
         oDialog = new AlertDialog.Builder(this);
 
@@ -88,7 +91,10 @@ public class WriteDiary extends AppCompatActivity {
 
         ViewPager viewPager = findViewById(R.id.pager);
         viewPager.setClipToPadding(false);
-        viewPager.setAdapter(new Adapter(this, imageList));
+        adapter = new Adapter(this, imageList);
+        viewPager.setAdapter(adapter);
+        image = adapter.returnPosition() + 1;
+        Log.d("이미지: ", Integer.toString(image));
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -107,10 +113,11 @@ public class WriteDiary extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat ("yyyyMMdd");
                 Calendar time = Calendar.getInstance();
                 date = format.format(time.getTime());
-
                 food = edit_food.getText().toString();
                 cal = text_cal.getText().toString();
                 content = edit_content.getText().toString();
+                String dir = imageList.get(image).toString();
+
                 Log.i("CHECK INFO YOU WROTE : ",date+", "+food+", "+cal+", "+content);
 
                 if(DbHelper == null){
@@ -123,6 +130,7 @@ public class WriteDiary extends AppCompatActivity {
                 diary.setFood(food);
                 diary.setCal(cal);
                 diary.setDiary(content);
+                diary.setImage(dir);
                 DbHelper.insertDiary(diary);
 
                goHome();

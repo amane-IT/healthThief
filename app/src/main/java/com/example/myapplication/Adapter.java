@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+
 import java.util.ArrayList;
 
 
@@ -19,6 +20,9 @@ public class Adapter extends PagerAdapter {
 
     private Context mContext;
     private ArrayList<Uri> imageList;
+    TextView idxView;
+    int idx;
+
 
     public Adapter(Context context, ArrayList<Uri> imageList)
     {
@@ -34,6 +38,9 @@ public class Adapter extends PagerAdapter {
 
         ImageView imageView = view.findViewById(R.id.imageView);
         imageView.setImageURI(imageList.get(position));
+
+        idxView = view.findViewById(R.id.noti_position);
+        idxView.setText(Integer.toString(position + 1));
         container.addView(view);
 
         return view;
@@ -53,4 +60,10 @@ public class Adapter extends PagerAdapter {
     public boolean isViewFromObject(@NonNull View view, @NonNull Object o) {
         return (view == (View)o);
     }
+
+    public int returnPosition()
+    {
+        return idx;
+    }
+
 }

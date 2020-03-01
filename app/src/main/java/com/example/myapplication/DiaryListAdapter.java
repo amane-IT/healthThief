@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -76,7 +77,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
 
         public void onBind(Diary item){
-           image.setImageResource(R.drawable.diaryfood_default);
+            image.setImageURI(Uri.parse(item.getImage()));
             meal.setText(item.getMeal());
             food.setText(item.getFood());
             cal.setText(item.getCal());

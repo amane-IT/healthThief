@@ -30,7 +30,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" MEAL STRING NOT NULL, "
                 +" FOOD STRING NOT NULL, "
                 +" CAL STRING NOT NULL, "
-                +" DIARY STRING NOT NULL )";
+                +" DIARY STRING, "
+                +" IMAGE STRING NOT NULL )";
 
         db.execSQL(s);
         Toast.makeText(context,"Diary Table Created",Toast.LENGTH_SHORT).show();
@@ -65,15 +66,16 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String s;
         s = " INSERT INTO FOODIARYDB ( "
-                + " DATE, MEAL, FOOD, CAL, DIARY )"
-                + " VALUES ( ?, ?, ?, ?, ? )";
+                + " DATE, MEAL, FOOD, CAL, DIARY, IMAGE )"
+                + " VALUES ( ?, ?, ?, ?, ?, ? )";
 
         db.execSQL(s,new Object[]{
                 Integer.parseInt(diary.getDate()),
                 diary.getMeal(),
                 diary.getFood(),
                 diary.getCal(),
-                diary.getDiary()});
+                diary.getDiary(),
+                diary.getImage()});
         Log.i("DIARY DATA INSERT : ","SUCCESS");
         Toast.makeText(context,"Diary Insert 완료",Toast.LENGTH_SHORT).show();
     }
@@ -99,11 +101,11 @@ public class DbHelper extends SQLiteOpenHelper {
     }
 
 
-    // 해당 날짜가 가진 모든 diary의  데이터(날짜/아점저/음식/칼로리)를 가져오는 메소드
+    // 해당 날짜가 가진 모든 diary의  데이터(날짜/아점저/음식/칼로리/사진)를 가져오는 메소드
     public ArrayList<Diary> getDiaryDataByDate(int data){
         String s;
         String d = Integer.toString(data);
-        s = " SELECT DATE, MEAL, FOOD, CAL FROM FOODIARYDB WHERE DATE = "+d;
+        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE FROM FOODIARYDB WHERE DATE = "+d;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(s,null);
         ArrayList<Diary> diaryList = new ArrayList<>();
@@ -119,6 +121,7 @@ public class DbHelper extends SQLiteOpenHelper {
             diary.setMeal(cursor.getString(1));
             diary.setFood(cursor.getString(2));
             diary.setCal(cursor.getString(3));
+            diary.setImage(cursor.getString(4));
 
             diaryList.add(diary);
         }
