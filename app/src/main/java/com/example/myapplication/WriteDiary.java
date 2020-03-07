@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,6 +35,8 @@ public class WriteDiary extends AppCompatActivity {
     EditText edit_content;
     AlertDialog.Builder oDialog;
 
+    Button detail;
+
     String meal;
     String food;
     String cal;
@@ -44,6 +47,11 @@ public class WriteDiary extends AppCompatActivity {
     ArrayList<Uri> imageList;
     Adapter adapter;
     //private DbOpenHelper mDbOpenHelper;
+
+    double kcal = 0;
+    float carbo = 0;
+    float protein = 0;
+    float fat = 0;
 
     private DbHelper DbHelper;
 
@@ -62,6 +70,32 @@ public class WriteDiary extends AppCompatActivity {
         text_cal = findViewById(R.id.totalCal);
         edit_content = findViewById(R.id.diaryContent);
 
+        detail = findViewById(R.id.menuDetail);
+        detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog detailDialog = new Dialog(WriteDiary.this);
+                detailDialog.setContentView(R.layout.detail_dialog);
+                TextView kcalTV = detailDialog.findViewById(R.id.txtKcal);
+                kcalTV.setText(Double.toString(kcal)+ " kcal");
+                TextView carboTV = detailDialog.findViewById(R.id.txtCarbo);
+                carboTV.setText(Float.toString(carbo) + " g");
+                TextView proteinTV = detailDialog.findViewById(R.id.txtProtein);
+                proteinTV.setText(Float.toString(protein) + " g");
+                TextView fatTV = detailDialog.findViewById(R.id.txtFat);
+                fatTV.setText(Float.toString(fat) + " g");
+
+                Button ok = (Button) detailDialog.findViewById(R.id.ok);
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        detailDialog.dismiss();
+                    }
+                });
+                detailDialog.show();
+            }
+        });
+
         rg = findViewById(R.id.mealType);
         oDialog = new AlertDialog.Builder(this);
 
@@ -69,7 +103,7 @@ public class WriteDiary extends AppCompatActivity {
         //카메라 부분에서 받아온 데이터 입력
         Intent intent = getIntent();
         String name = "";
-        int kcal = 0;
+
         int idx = intent.getExtras().getInt("idx");
         imageList = new ArrayList();
 
@@ -80,20 +114,30 @@ public class WriteDiary extends AppCompatActivity {
             imageList.add(imageUri);
             String foodname = intent.getExtras().getString("food_name"+i);
             String foodkcal = intent.getExtras().getString("food_kcal"+i);
+            String foodCarbo = intent.getExtras().getString("food_carbo"+i);
+            String foodProtein = intent.getExtras().getString("food_protein"+i);
+            String foodFat = intent.getExtras().getString("food_fat"+i);
+            String foodServing = intent.getExtras().getString("food_serving"+i);
+
+
             if (i == 0)
                 name = foodname;
             else
                 name = name + ", "+ foodname;
-            kcal += Integer.parseInt(foodkcal);
+            kcal += Integer.parseInt(foodkcal) * Double.parseDouble(foodServing) / 100;
+            carbo += Float.parseFloat(foodCarbo) * Double.parseDouble(foodServing) / 100;
+            protein += Float.parseFloat(foodProtein) * Double.parseDouble(foodServing) / 100;
+            fat += Float.parseFloat(foodFat) * Double.parseDouble(foodServing) / 100;
+
         }
         edit_food.setText(name);
-        text_cal.setText(Integer.toString(kcal));
+        text_cal.setText(Double.toString(kcal));
 
         ViewPager viewPager = findViewById(R.id.pager);
         viewPager.setClipToPadding(false);
         adapter = new Adapter(this, imageList);
         viewPager.setAdapter(adapter);
-        image = adapter.returnPosition() + 1;
+        image = adapter.returnPosition();
         Log.d("이미지: ", Integer.toString(image));
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -123,6 +167,7 @@ public class WriteDiary extends AppCompatActivity {
                 if(DbHelper == null){
                     DbHelper = new DbHelper(WriteDiary.this,"TEST",null,DbHelper.DB_VERSION);
                 }
+
                 // DB에 새 다이어리 data 삽입
                 Diary diary = new Diary();
                 diary.setDate(date);
@@ -131,6 +176,9 @@ public class WriteDiary extends AppCompatActivity {
                 diary.setCal(cal);
                 diary.setDiary(content);
                 diary.setImage(dir);
+                diary.setCarbo(Float.toString(carbo));
+                diary.setProtein(Float.toString(protein));
+                diary.setFat(Float.toString(fat));
                 DbHelper.insertDiary(diary);
 
                goHome();

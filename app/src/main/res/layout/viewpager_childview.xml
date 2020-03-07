@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="30dp"
-        android:text="대표 이미지를 선택해 주세요" />
+        android:text="오늘 먹은 것들" />
 
     <LinearLayout
         android:layout_width="wrap_content"

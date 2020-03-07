@@ -10,6 +10,9 @@ public class Diary {
     private String meal;
     private String food;
     private String cal;
+    private String carbo;
+    private String protein;
+    private String fat;
     private String diary;
     private String image;
 
@@ -18,6 +21,9 @@ public class Diary {
     public String getMeal(){ return meal;}
     public String getFood(){ return food;}
     public String getCal(){ return cal;}
+    public String getCarbo(){ return carbo; }
+    public String getProtein() { return protein; }
+    public String getFat() { return fat; }
     public String getDiary(){ return diary;}
     public String getImage() { return image;}
 
@@ -26,6 +32,9 @@ public class Diary {
     public void setMeal(String meal){this.meal = meal;}
     public void setFood(String food){this.food = food;}
     public void setCal(String cal){this.cal = cal;}
+    public void setCarbo(String carbo) { this.carbo = carbo; }
+    public void setProtein(String protein) { this.protein = protein; }
+    public void setFat(String fat) { this.fat = fat; }
     public void setDiary(String diary){this.diary = diary;}
     public void setImage(String image){this.image = image;}
 
