@@ -30,7 +30,11 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" MEAL STRING NOT NULL, "
                 +" FOOD STRING NOT NULL, "
                 +" CAL STRING NOT NULL, "
-                +" DIARY STRING NOT NULL )";
+                +" CARBO STRING NOT NULL, "
+                +" PROTEIN STRING NOT NULL, "
+                +" FAT STRING NOT NULL, "
+                +" DIARY STRING NOT NULL, "
+                +" IMAGE STRING NOT NULL)";
 
         db.execSQL(s);
         Toast.makeText(context,"Diary Table Created",Toast.LENGTH_SHORT).show();
@@ -65,15 +69,19 @@ public class DbHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         String s;
         s = " INSERT INTO FOODIARYDB ( "
-                + " DATE, MEAL, FOOD, CAL, DIARY )"
-                + " VALUES ( ?, ?, ?, ?, ? )";
+                + " DATE, MEAL, FOOD, CAL, DIARY, IMAGE, CARBO, PROTEIN, FAT )"
+                + " VALUES ( ?, ?, ?, ?, ? ,? ,?, ?,?)";
 
         db.execSQL(s,new Object[]{
                 Integer.parseInt(diary.getDate()),
                 diary.getMeal(),
                 diary.getFood(),
                 diary.getCal(),
-                diary.getDiary()});
+                diary.getDiary(),
+                diary.getImage(),
+                diary.getCarbo(),
+                diary.getProtein(),
+                diary.getFat()});
         Log.i("DIARY DATA INSERT : ","SUCCESS");
         Toast.makeText(context,"Diary Insert 완료",Toast.LENGTH_SHORT).show();
     }

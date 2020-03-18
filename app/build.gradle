@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.myapplication"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -40,10 +40,13 @@ android {
         androidTestImplementation 'com.android.support.test:runner:1.0.2'
         androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
         implementation 'com.soundcloud.android:android-crop:1.0.1@aar'
+        implementation 'com.wonderkiln:camerakit:0.13.1'
         implementation 'com.android.support:recyclerview-v7:28.0.0'
         implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
         implementation 'com.android.support.constraint:constraint-layout:1.1.3'
         implementation 'com.applandeo:material-calendar-view:1.5.1'
-
+        implementation 'org.tensorflow:tensorflow-lite:0.0.0-nightly'
+        implementation 'org.tensorflow:tensorflow-lite-gpu:0.0.0-nightly'
+        implementation 'org.tensorflow:tensorflow-lite-support:0.0.0-nightly'
     }
 }
