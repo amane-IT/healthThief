@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -72,11 +75,24 @@ public class DiaryListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             food = itemView.findViewById(R.id.itemFood);
             cal = itemView.findViewById(R.id.itemCal);
             unit = itemView.findViewById(R.id.itemCalUnit);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = getAdapterPosition() ;
+                    if (pos != RecyclerView.NO_POSITION) {
+                        // TODO : use pos.
+                        Toast.makeText(context, "Touch Success", Toast.LENGTH_SHORT).show();
+                        Log.i("List Item Click : ","You Touch the item!");
+                    }
+
+                }
+            });
         }
 
 
         public void onBind(Diary item){
-           image.setImageResource(R.drawable.diaryfood_default);
+           image.setImageURI(Uri.parse(item.getImage()));
             meal.setText(item.getMeal());
             food.setText(item.getFood());
             cal.setText(item.getCal());

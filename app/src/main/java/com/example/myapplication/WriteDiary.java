@@ -163,6 +163,7 @@ public class WriteDiary extends AppCompatActivity {
                 food = edit_food.getText().toString();
                 cal = text_cal.getText().toString();
                 content = edit_content.getText().toString();
+                String dir = imageList.get(image).toString();
                 Log.i("CHECK INFO YOU WROTE : ",date+", "+food+", "+cal+", "+content);
 
                 if(DbHelper == null){
@@ -178,6 +179,7 @@ public class WriteDiary extends AppCompatActivity {
                 diary.setCarbo(Float.toString(carbo));
                 diary.setProtein(Float.toString(protein));
                 diary.setFat(Float.toString(fat));
+                diary.setImage(dir);
                 DbHelper.insertDiary(diary);
 
                goHome();

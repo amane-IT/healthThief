@@ -1,14 +1,32 @@
 package com.example.myapplication;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 public class getMonthly extends AppCompatActivity {
+
+    getMonthly gm = this;
+    Button back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_month);
 
+        // 전 화면으로 돌아감
+        back = (Button) findViewById(R.id.monthBack);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentHome = new Intent(gm,MainActivity.class);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intentHome);
+                finish();
+            }
+        });
 
         //   https://github.com/Applandeo/Material-Calendar-View
 

@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/graphBack"
+        android:id="@+id/trendBack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/default_green_bt"
@@ -20,5 +20,13 @@
     android:textSize="40sp"
     android:gravity="center"
     android:text="요즘 자주 먹는 거"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/piechart">
+
+    </com.github.mikephil.charting.charts.PieChart>
+
 
 </LinearLayout>

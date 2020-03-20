@@ -123,6 +123,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Log.i("DIARY DATA : ", cursor.getString(1));
             Log.i("DIARY DATA : ", cursor.getString(2));
             Log.i("DIARY DATA : ", cursor.getString(3));
+
             diary.setDate(cursor.getString(0));
             diary.setMeal(cursor.getString(1));
             diary.setFood(cursor.getString(2));
