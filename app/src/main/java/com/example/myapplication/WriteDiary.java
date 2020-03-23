@@ -98,7 +98,6 @@ public class WriteDiary extends AppCompatActivity {
         });
 
 
-
         rg = findViewById(R.id.mealType);
         oDialog = new AlertDialog.Builder(this);
 

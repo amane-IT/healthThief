@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import java.io.Serializable;
+
 // 다이어리 기본 정보 관리
-public class Diary {
+public class Diary implements Serializable {
 
     //PK
     private int _id;

@@ -62,6 +62,7 @@ public class getTrend extends AppCompatActivity {
 
         if(cursor.getCount()>0){
             cursor.moveToFirst();
+            // cursor.nextTo? 로 if-else문 써서 하루 여러끼 먹으면 합산으로 계산하도록 한다
             carbon = Float.valueOf(cursor.getString(0));
             protein = Float.valueOf(cursor.getString(1));
             fat = Float.valueOf(cursor.getString(2));

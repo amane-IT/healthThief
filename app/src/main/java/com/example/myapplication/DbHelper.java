@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DbHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final int DB_VERSION = 6; //DB onCreate String s 바뀔시 숫자 up
+    public static final int DB_VERSION = 7; //DB onCreate String s 바뀔시 숫자 up
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version){
         super(context,name,factory,version);
@@ -33,7 +33,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" CARBO STRING NOT NULL, "
                 +" PROTEIN STRING NOT NULL, "
                 +" FAT STRING NOT NULL, "
-                +" DIARY STRING NOT NULL, "
+                +" DIARY STRING, "
                 +" IMAGE STRING NOT NULL)";
 
         db.execSQL(s);
@@ -111,7 +111,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Diary> getDiaryDataByDate(int data){
         String s;
         String d = Integer.toString(data);
-        s = " SELECT DATE, MEAL, FOOD, CAL FROM FOODIARYDB WHERE DATE = "+d;
+        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE, CARBO, PROTEIN, FAT FROM FOODIARYDB WHERE DATE = "+d;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(s,null);
         ArrayList<Diary> diaryList = new ArrayList<>();
@@ -128,6 +128,10 @@ public class DbHelper extends SQLiteOpenHelper {
             diary.setMeal(cursor.getString(1));
             diary.setFood(cursor.getString(2));
             diary.setCal(cursor.getString(3));
+            diary.setImage(cursor.getString(4));
+            diary.setCarbo(cursor.getString(5));
+            diary.setProtein(cursor.getString(6));
+            diary.setFat(cursor.getString(7));
 
             diaryList.add(diary);
         }
@@ -164,6 +168,12 @@ public class DbHelper extends SQLiteOpenHelper {
 
         Log.i("GET INFO DATA: ","SUCCESS");
         return infoList;
+    }
+
+    public void dropTable()
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE FOODIARYDB");
     }
 
 }
