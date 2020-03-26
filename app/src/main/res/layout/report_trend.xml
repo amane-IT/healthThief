@@ -15,11 +15,20 @@
     </Button>
 
 <TextView
+    android:id="@+id/giveAdvice"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="40sp"
+    android:textSize="30sp"
     android:gravity="center"
-    android:text="요즘 자주 먹는 거"/>
+    android:text="오늘 많이or적게 먹었네여"/>
+
+    <TextView
+        android:id="@+id/giveAdvice_nut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:text="탄단지 어쩌구저쩌구"/>
 
     <com.github.mikephil.charting.charts.PieChart
         android:layout_width="match_parent"

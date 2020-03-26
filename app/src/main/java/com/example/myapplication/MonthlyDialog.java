@@ -65,8 +65,6 @@ public class MonthlyDialog extends Dialog {
 
 
         // getMonthly 에서 intent.엑스트롸 어쩌구로 넘겨받은 데이터 표시하기
-        Intent intent = getIntent();
-        ArrayList<Diary> list = (ArrayList<Diary>) intent.getSerializableExtra("diaries");
 
 
         carbon.setText("탄"+"g");

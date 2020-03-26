@@ -20,6 +20,7 @@ public class fragmentSetting extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
         rootView = inflater.inflate(R.layout.fragment_setting,container,false);
         setBt = rootView.findViewById(R.id.settingDone);
 
@@ -68,8 +69,12 @@ public class fragmentSetting extends Fragment {
             @Override
             public void onClick(View v){
                 Log.i("설정 변경 버튼","클릭함");
+                /*
                 Intent intent = new Intent(getActivity(),changeProfile.class);
                 startActivity(intent);
+                 */
+                ChangeProfileDialog changeProfileDialog = new ChangeProfileDialog();
+                changeProfileDialog.show(getActivity().getSupportFragmentManager(),"tag");
             }
 
         });

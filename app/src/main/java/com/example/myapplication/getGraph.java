@@ -65,7 +65,6 @@ public class getGraph extends AppCompatActivity {
         while(cursor.moveToNext()){
 
 
-
         }
 
 
