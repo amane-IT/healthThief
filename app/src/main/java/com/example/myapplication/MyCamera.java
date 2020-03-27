@@ -3,31 +3,23 @@ package com.example.myapplication;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.media.ExifInterface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -43,12 +35,10 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.tensorflow.lite.Interpreter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -70,8 +60,6 @@ public class MyCamera extends AppCompatActivity {
     //
     String[] labels = {"냉면", "크림파스타", "마카롱", "마라탕", "수플레", "돈까스", "쌀국수", "연어초밥", "만두", "토마토파스타"};
 
-    Bitmap originalBm;
-
     String[][] data = new String[3][8];
     int i = 0;
     int kcal = 0;
@@ -81,20 +69,12 @@ public class MyCamera extends AppCompatActivity {
     float fat = 0;
     double servings = 0;
 
-
-
     private ImageView iv_food;
     private int id_view;
-    private String absolutePath;
-    private File tempFile;
-    private Boolean isCamera = false;
-    private String realPath;
 
     private Button item1, item2, item3, item4, save;
 
     public List<foodData> foodDataList;
-
-    int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,14 +106,6 @@ public class MyCamera extends AppCompatActivity {
         catch(IOException ex){
             Log.d("app", ex.toString());
         }
-
-        if(!isConnect())
-        {
-            Toast.makeText(this, "네트워크 연결 x", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/foodiary/" + currentTimeMillis()+ ".jpg";
 
         checkDangerousPermissions();
     }
@@ -169,34 +141,6 @@ public class MyCamera extends AppCompatActivity {
         }
     }
 
-    //인터넷 연결 확인 함수
-    private boolean isConnect() {
-        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        Boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-
-        return isConnected;
-    }
-
-    //사진 생성
-    private File createImageFile() throws IOException {
-
-        // 이미지 파일 이름 ( foodiary시간 )
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "foodiary" + timeStamp + "_";
-
-        // 이미지가 저장될 파일 이름 ( foodiary )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/foodiary/");
-        if (!storageDir.exists()) storageDir.mkdirs();
-
-        // 빈 파일 생성
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        Log.d("경로", "createImageFile : " + image.getAbsolutePath());
-
-        return image;
-    }
-
     private MappedByteBuffer loadModelFile(String path) throws IOException {
         AssetFileDescriptor fileDescriptor = this.getAssets().openFd(path);
         FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
@@ -216,17 +160,9 @@ public class MyCamera extends AppCompatActivity {
         if(id_view == R.id.save) {
 
             /**
-             * 여기에 디비에 정보를 찾는 코드를 짜자..
-             * 기타의 경우, 이름과 칼로리, 그리고 총량만 입력받고
-             * 총량을 기타로 퉁쳐버리는 건 어떨까?
-             * 디비에 저장할 때 이름으로 음식디비의 정보를 찾아서 저장해야 하니까
-             * 해당 부분은 이차원배열에 음식 정보를 넣어놨다가 나중에 음식 추가가 끝나면
-             * 다음 페이지로 넘어가기 전에 정보를 추가하는 걸로 하자
-             * */
-
-            /**
              * 추가할 음식을 물어보는 코드 */
 
+            //몇인분을 먹었나요
             foodDialog.setContentView(R.layout.serving_dialog);
             RadioGroup radioGroup = foodDialog.findViewById(R.id.serve);
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -278,6 +214,7 @@ public class MyCamera extends AppCompatActivity {
                         Log.d("food_data: ", foodDataList.get(1).getName());
                         Log.d("serve: ", Double.toString(servings));
 
+                        //사진은.. 확인 버튼 눌렀을시에만 저장됩니다.
                         Drawable d = iv_food.getDrawable();
                         Bitmap photo = ((BitmapDrawable)d).getBitmap();
                         String strFilePath = Environment.getExternalStorageDirectory() + "/foodiary/";
@@ -444,6 +381,7 @@ public class MyCamera extends AppCompatActivity {
 
     }
 
+    //이미지를 받아오면 크롭을 하자
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
@@ -589,6 +527,7 @@ public class MyCamera extends AppCompatActivity {
         return byteBuffer;
     }
 
+    //디비 초기화
     private void initLoadDB(){
         DataAdapter mDBHelper = new DataAdapter(this);
         mDBHelper.createDatabase();
@@ -603,6 +542,7 @@ public class MyCamera extends AppCompatActivity {
         mDBHelper.close();
     }
 
+    //찾아라 머신러닝 결과값
     private void searchData(String name)
     {
         Log.d("크기: ", String.valueOf(foodDataList.size()));
@@ -636,6 +576,8 @@ public class MyCamera extends AppCompatActivity {
             Log.d("단백질: ", Float.toString(protein));
         }
     }
+
+    //비트맵->파일 저장 함수
     public  void SaveBitmapToFileCache(Bitmap bitmap, String strFilePath,
                                        String filename) {
 
