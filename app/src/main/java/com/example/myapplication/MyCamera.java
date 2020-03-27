@@ -13,14 +13,18 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
+
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.IdRes;
+import android.support.media.ExifInterface;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -30,19 +34,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.soundcloud.android.crop.Crop;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.tensorflow.lite.Interpreter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
@@ -50,6 +57,8 @@ import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static java.lang.System.currentTimeMillis;
 
 public class MyCamera extends AppCompatActivity {
 
@@ -84,6 +93,8 @@ public class MyCamera extends AppCompatActivity {
     private Button item1, item2, item3, item4, save;
 
     public List<foodData> foodDataList;
+
+    int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +133,7 @@ public class MyCamera extends AppCompatActivity {
             return;
         }
 
-        absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/foodiary/" + System.currentTimeMillis()+ ".jpg";
+        absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/foodiary/" + currentTimeMillis()+ ".jpg";
 
         checkDangerousPermissions();
     }
@@ -171,11 +182,11 @@ public class MyCamera extends AppCompatActivity {
     //사진 생성
     private File createImageFile() throws IOException {
 
-        // 이미지 파일 이름 ( blackJin_{시간}_ )
+        // 이미지 파일 이름 ( foodiary시간 )
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "foodiary" + timeStamp + "_";
 
-        // 이미지가 저장될 파일 이름 ( blackJin )
+        // 이미지가 저장될 파일 이름 ( foodiary )
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/foodiary/");
         if (!storageDir.exists()) storageDir.mkdirs();
 
@@ -184,47 +195,6 @@ public class MyCamera extends AppCompatActivity {
         Log.d("경로", "createImageFile : " + image.getAbsolutePath());
 
         return image;
-    }
-
-    //카메라에서 촬영
-    public void doTakePhotoAction(){
-        isCamera = true;
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        try {
-
-            tempFile = createImageFile();
-        } catch (IOException e) {
-            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            finish();
-            e.printStackTrace();
-        }
-        if (tempFile != null) {
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-
-                Uri photoUri = FileProvider.getUriForFile(this,
-                        "myapplication.provider", tempFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(intent, 2);
-
-            } else {
-
-                Uri photoUri = Uri.fromFile(tempFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(intent, 2);
-
-            }
-        }
-
-    }
-
-    //앨범에서 사진 선택
-    public void doTakeAlbumAction(){
-        isCamera = false;
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
     }
 
     private MappedByteBuffer loadModelFile(String path) throws IOException {
@@ -304,12 +274,22 @@ public class MyCamera extends AppCompatActivity {
                     //음식 추가는 임의로 3가지까지만..
                     else if (i < 3) {
 
+
                         Log.d("food_data: ", foodDataList.get(1).getName());
                         Log.d("serve: ", Double.toString(servings));
 
+                        Drawable d = iv_food.getDrawable();
+                        Bitmap photo = ((BitmapDrawable)d).getBitmap();
+                        String strFilePath = Environment.getExternalStorageDirectory() + "/foodiary/";
+                        long now = currentTimeMillis();
+                        Date mDate = new Date(now);
+                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm").format(mDate);
+                        String fileName = "foodiary" + timeStamp + ".jpg";
+                        SaveBitmapToFileCache(photo, strFilePath, fileName);
+
                         //data = { i, 이미지 경로, 이름, 칼로리, 탄수화물, 단백질, 지방, 식이섬유, 당, 나트륨, 1인분 양 }
                         data[i][0] = Integer.toString(i);
-                        data[i][1] = realPath;
+                        data[i][1] = strFilePath + fileName;
                         data[i][2] = String.valueOf(resultTextView.getText());
                         data[i][3] = Integer.toString(kcal);
                         data[i][4] = Float.toString(carbo);
@@ -318,7 +298,7 @@ public class MyCamera extends AppCompatActivity {
                         data[i][7] = Double.toString(serving * servings);
 
 
-                        Log.d("칼로리: ", data[i][3]);
+                        Log.d("경로: ", data[i][1]);
                         Log.d("탄수: ", data[i][4]);
                         Log.d("단백질: ", data[i][5]);
                         i++;
@@ -406,33 +386,9 @@ public class MyCamera extends AppCompatActivity {
         //else
         if(id_view == R.id.picBtn)
         {
-            DialogInterface.OnClickListener cameraListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    doTakePhotoAction();
-                }
-            };
-            DialogInterface.OnClickListener albumListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    doTakeAlbumAction();
-                }
-            };
-
-            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            };
-
-            new AlertDialog.Builder(this)
-                    .setTitle("업로드 이미지 선택")
-                    .setPositiveButton("사진 촬영", cameraListener)
-                    .setNeutralButton("앨범선택", albumListener)
-                    .setNegativeButton("취소", cancelListener)
-                    .show();
-
+            CropImage.activity()
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .start(this);
         }
 
         if (id_view == R.id.item1){
@@ -488,60 +444,26 @@ public class MyCamera extends AppCompatActivity {
 
     }
 
-    //이미지 크롭
-    private void cropImage(Uri photoUri){
-        /**
-         *  갤러리에서 선택한 경우에는 tempFile 이 없으므로 새로 생성해줍니다.
-         */
-        if(tempFile == null) {
-            try {
-                tempFile = createImageFile();
-            } catch (IOException e) {
-                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                finish();
-                e.printStackTrace();
-            }
-        }
-
-        //크롭 후 저장할 Uri
-        Uri savingUri = Uri.fromFile(tempFile);
-
-        Crop.of(photoUri, savingUri).asSquare().start(this);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
-        InputStream inputStream = null;
-        switch(requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    //inputStream = getAssets().open("number0.png");
-                    Uri uri = imageReturnedIntent.getData();
-                    cropImage(uri);
-                    realPath = getRealPathFromURI(uri);
-
-                }
-                break;
-            case 2:
-                if (resultCode == RESULT_OK) {
-                    Uri uri = FileProvider.getUriForFile(this, "myapplication.provider", tempFile);
-                    cropImage(uri);
-                }
-                break;
-
-            case Crop.REQUEST_CROP:
-                //File cropFile = new File(Crop.getOutput(imageReturnedIntent).getPath());
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(imageReturnedIntent);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                iv_food.setImageURI(resultUri);
+                Bitmap bitmap = null;
                 try {
-                    inputStream = getContentResolver().openInputStream(Uri.fromFile(tempFile));
-                } catch (IOException ex) {
-                    Log.d("app", ex.toString());
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                Bitmap testBitmap = BitmapFactory.decodeStream(inputStream);
-                detectImage(testBitmap);
+                detectImage(bitmap);
                 searchData(String.valueOf(resultTextView.getText()));
-                setImage();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
         }
     }
 
@@ -636,43 +558,6 @@ public class MyCamera extends AppCompatActivity {
 
     }
 
-    //이미지 뷰에 사진 세팅
-    private void setImage() {
-
-        //크롭할 때 이미 리사이즈 하지 않았나? >> 없어도 됨!
-        //ImageResizeUtils.resizeFile(tempFile, tempFile, 300, isCamera);
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d("경로", "setImage : " + tempFile.getAbsolutePath());
-
-        iv_food.setImageBitmap(originalBm);
-        //storeCropImage(originalBm, tempFile.getAbsolutePath());
-
-        //detectImage(originalBm);
-        realPath = tempFile.getAbsolutePath();
-        /**
-         *  tempFile 사용 후 null 처리를 해줘야 합니다.
-         *  (resultCode != RESULT_OK) 일 때 (tempFile != null)이면 해당 파일을 삭제하기 때문에
-         *  기존에 데이터가 남아 있게 되면 원치 않은 삭제가 이뤄집니다.
-         */
-        tempFile = null;
-    }
-
-    //URI의 실제저장경로 찾는 함수
-    public String getRealPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
     private ByteBuffer bitmap2bytebuffer(Bitmap bitmap, int width, int height, int color) {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(width*height*color*4); //A float has 4 bytes
         byteBuffer.order(ByteOrder.nativeOrder());
@@ -751,5 +636,34 @@ public class MyCamera extends AppCompatActivity {
             Log.d("단백질: ", Float.toString(protein));
         }
     }
+    public  void SaveBitmapToFileCache(Bitmap bitmap, String strFilePath,
+                                       String filename) {
 
+        File file = new File(strFilePath);
+
+        // If no folders
+        if (!file.exists()) {
+            file.mkdirs();
+            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        }
+
+        File fileCacheItem = new File(strFilePath + filename);
+        OutputStream out = null;
+
+        try {
+            fileCacheItem.createNewFile();
+            out = new FileOutputStream(fileCacheItem);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            Toast.makeText(this, fileCacheItem.getAbsolutePath(), Toast.LENGTH_SHORT).show();
+            Log.d("경로1111: ", fileCacheItem.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

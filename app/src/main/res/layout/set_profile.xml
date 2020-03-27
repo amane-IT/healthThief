@@ -38,9 +38,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
-                android:hint="홍길동"
-                />
+                android:hint="김눈송"
+                android:inputType="textPersonName" />
 
         </LinearLayout>
 

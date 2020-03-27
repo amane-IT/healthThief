@@ -56,11 +56,11 @@
         <Button
             android:id="@+id/picBtn"
             android:layout_width="300dp"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:onClick="onClick"
             android:text="사진 선택"
-            android:textSize="15sp"
-            android:onClick="onClick"/>
+            android:textSize="15sp" />
 
     </LinearLayout>
 
