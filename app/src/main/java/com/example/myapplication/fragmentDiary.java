@@ -1,6 +1,8 @@
 package com.example.myapplication;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -39,7 +41,7 @@ public class fragmentDiary  extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        diaryListAdapter = new DiaryListAdapter(diaryList, getActivity());
+
     }
 
     @Override
@@ -70,11 +72,11 @@ public class fragmentDiary  extends Fragment {
         diaryList = DbHelper.getDiaryDataByDate(ft2);
         if(diaryList.size()==0){
             Log.i("DIART DATA : ","EMPTY!");
-            Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(),"There is no data!",Toast.LENGTH_SHORT).show();
         }
         else{
             Log.i("DIART DATA : ","NOT EMPTY!");
-            Toast.makeText(getContext(),"data list set!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(),"data list set!",Toast.LENGTH_SHORT).show();
         }
 
         // RecyclerView
@@ -110,6 +112,37 @@ public class fragmentDiary  extends Fragment {
         });
 
 
+        /*
+        diaryListAdapter = new DiaryListAdapter(diaryList, getActivity().getApplicationContext());
+
+        // 다이어리 리스트 커스텀 클릭 이벤트
+        // 참고 : http://recipes4dev.tistory.com/168
+        diaryListAdapter.setOnItemClickListener(new DiaryListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                // TODO : RecyclerView ItemClick Event
+
+                Toast.makeText(getActivity().getApplicationContext(),"Touch Item",Toast.LENGTH_SHORT).show();
+                Diary alertDiaryDialog = diaryList.get(position);
+                String content = alertDiaryDialog.getDiary();
+                String carbon = alertDiaryDialog.getCarbo();
+                String protein = alertDiaryDialog.getProtein();
+                String fat = alertDiaryDialog.getFat();
+
+                showDiaryDialog sd = new showDiaryDialog();
+                // dialog에 아이템 포지션에서 얻은 정보 건네기
+                Bundle args = new Bundle();
+                args.putString("content",content);
+                args.putString("carbo",carbon);
+                args.putString("protein",protein);
+                args.putString("fat",fat);
+                sd.setArguments(args);
+                sd.show(getActivity().getSupportFragmentManager(),"DiaryDialog");
+            }
+        });
+         */
+
+
         // return inflater.inflate(R.layout.fragment_diary, container, false);
         return rootView;
     }
@@ -141,7 +174,7 @@ public class fragmentDiary  extends Fragment {
         if(diaryList.size()==0){
             changeData(diaryList);
             Log.i("DIARY DATA : ","EMPTY!");
-            Toast.makeText(getContext(),"There is no data!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext().getApplicationContext(),"There is no data!",Toast.LENGTH_SHORT).show();
         }
         else {
             changeData(diaryList);

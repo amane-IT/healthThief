@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DbHelper extends SQLiteOpenHelper {
 
     private Context context;
-    public static final int DB_VERSION = 7; //DB onCreate String s 바뀔시 숫자 up
+    public static final int DB_VERSION = 8; //DB onCreate String s 바뀔시 숫자 up
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory,int version){
         super(context,name,factory,version);
@@ -33,11 +33,11 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" CARBO STRING NOT NULL, "
                 +" PROTEIN STRING NOT NULL, "
                 +" FAT STRING NOT NULL, "
-                +" DIARY STRING, "
+                +" DIARY STRING NOT NULL, "
                 +" IMAGE STRING NOT NULL)";
 
         db.execSQL(s);
-        Toast.makeText(context,"Diary Table Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(),"Diary Table Created",Toast.LENGTH_SHORT).show();
 
         String s2;
         s2 = " CREATE TABLE IF NOT EXISTS INFODB ( "
@@ -49,12 +49,12 @@ public class DbHelper extends SQLiteOpenHelper {
                 +" SEX INTEGER NOT NULL, "
                 +" SCAL INTEGER NOT NULL )";
         db.execSQL(s2);
-        Toast.makeText(context,"Info Table Created",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(),"Info Table Created",Toast.LENGTH_SHORT).show();
 
     }
 
     @Override public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-        Toast.makeText(context, "버전이 올라갔습니다.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(), "버전이 올라갔습니다.", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -83,7 +83,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 diary.getProtein(),
                 diary.getFat()});
         Log.i("DIARY DATA INSERT : ","SUCCESS");
-        Toast.makeText(context,"Diary Insert 완료",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context.getApplicationContext(),"Diary Insert 완료",Toast.LENGTH_SHORT).show();
     }
 
     public void insertInfo(Info info){
@@ -111,7 +111,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Diary> getDiaryDataByDate(int data){
         String s;
         String d = Integer.toString(data);
-        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE, CARBO, PROTEIN, FAT FROM FOODIARYDB WHERE DATE = "+d;
+        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE, CARBO, PROTEIN, FAT, DIARY FROM FOODIARYDB WHERE DATE = "+d;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(s,null);
         ArrayList<Diary> diaryList = new ArrayList<>();
@@ -123,6 +123,7 @@ public class DbHelper extends SQLiteOpenHelper {
             Log.i("DIARY DATA : ", cursor.getString(1));
             Log.i("DIARY DATA : ", cursor.getString(2));
             Log.i("DIARY DATA : ", cursor.getString(3));
+            Log.i("DIARY DATA : ", cursor.getString(8));
 
             diary.setDate(cursor.getString(0));
             diary.setMeal(cursor.getString(1));
@@ -132,6 +133,7 @@ public class DbHelper extends SQLiteOpenHelper {
             diary.setCarbo(cursor.getString(5));
             diary.setProtein(cursor.getString(6));
             diary.setFat(cursor.getString(7));
+            diary.setDiary(cursor.getString(8));
 
             diaryList.add(diary);
         }

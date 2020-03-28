@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <!--보여줄 것 : 다이어리 내용, 탄, 단, 지 -->
+    <LinearLayout
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30sp"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/dialogDiary_contentT"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Show Diary HERE"/>
+
+        <TextView
+            android:id="@+id/dialogDiary_content"
+            android:layout_width="200sp"
+            android:layout_height="wrap_content"
+            android:maxHeight="400sp"
+            android:layout_margin="10sp"
+            android:textAlignment="center"
+            android:text="Show Diary HERE"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="carbon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="protein"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="fat"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30sp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/diary_carbon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="true_carbon"/>
+
+        <TextView
+            android:id="@+id/diary_protein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="true_protein"/>
+
+        <TextView
+            android:id="@+id/diary_fat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="true_fat"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>
