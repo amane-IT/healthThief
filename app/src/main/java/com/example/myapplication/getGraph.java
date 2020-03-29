@@ -49,9 +49,8 @@ public class getGraph extends AppCompatActivity {
         // TODO : DB 데이터 가져오기
         // 참고링크 https://blog.naver.com/bho7982/220914947711
 
-        /*
 
-        SimpleDateFormat format = new SimpleDateFormat ("yyyyMMdd");
+        SimpleDateFormat format = new SimpleDateFormat ("MM/dd");
         Calendar time = Calendar.getInstance();
         String date = format.format(time.getTime());
         float datef = Float.parseFloat(date);
@@ -65,10 +64,11 @@ public class getGraph extends AppCompatActivity {
         while(cursor.moveToNext()){
 
 
+
         }
 
 
-
+        /*
         List<Entry> calories = new ArrayList<Entry>();
 
          */

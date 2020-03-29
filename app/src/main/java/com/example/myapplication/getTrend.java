@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -92,9 +93,9 @@ public class getTrend extends AppCompatActivity {
             String cadvice = "";
             String padvice = "";
             String fadvice = "";
-            if (proper_c >= carbon)  cadvice = "과다"; else cadvice = "부족";
-            if (proper_p >= protein) padvice = "과다"; else padvice = "부족";
-            if (proper_f >= fat) fadvice = "과다"; else fadvice = "부족";
+            if (proper_c <= carbon)  cadvice = "과다"; else cadvice = "부족";
+            if (proper_p <= protein) padvice = "과다"; else padvice = "부족";
+            if (proper_f <= fat) fadvice = "과다"; else fadvice = "부족";
             String nutri_total_advice = "탄수화물: " + cadvice +  " 단백질: " + padvice + "지방:"+fadvice;
             nutri_advice.setText(nutri_total_advice);
         }
@@ -128,15 +129,22 @@ public class getTrend extends AppCompatActivity {
         // TODO : making pieChart
         pieChart = (PieChart)findViewById(R.id.piechart);
 
+        // 퍼센티지
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setExtraOffsets(5,10,5,5);
+        pieChart.setExtraOffsets(5,5,5,5);
 
         pieChart.setDragDecelerationFrictionCoef(0.95f);
 
-        pieChart.setDrawHoleEnabled(false);
+        // 가운데 구멍 만들기
+        pieChart.setDrawHoleEnabled(true);
+        pieChart.setHoleRadius(30f);
         pieChart.setHoleColor(Color.WHITE);
-        pieChart.setTransparentCircleRadius(61f);
+        pieChart.setTransparentCircleRadius(35f);
+        // 애니메이션
+        pieChart.animateXY(5000,3000);
+        pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic);
+
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
@@ -151,21 +159,23 @@ public class getTrend extends AppCompatActivity {
         pieChart.setDescription(description);
          */
 
-        pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
-
         PieDataSet dataSet = new PieDataSet(yValues,"Nutrient");
         dataSet.setSliceSpace(3f);
         dataSet.setSelectionShift(5f);
         dataSet.setColors(ColorTemplate.PASTEL_COLORS);
+        // 뒤에 퍼센트 붙이기
+        dataSet.setValueFormatter(new PercentFormatter());
 
         PieData data = new PieData((dataSet));
         data.setValueTextSize(10f);
         data.setValueTextColor(Color.YELLOW);
 
+        // remove legend (그래프 옆에 붙은 네모난 거...)
+        Legend xValue = pieChart.getLegend();
+        xValue.setEnabled(false);
+
         pieChart.setData(data);
 
-        // db에서 제일 최근에 먹은 음식 3일분 어치 가져오기
-        // db에서  현재 날짜에서 1달 단위로 많이 먹은 음식 가져오기
         // 당일 먹은 음식 탄단지 원그래프로 알려주고 부족한 영양소 알려주기
 
     }
