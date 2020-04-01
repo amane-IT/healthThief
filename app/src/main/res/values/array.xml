@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="profile_arr">
+        <item>이름</item>
+        <item>나이</item>
+        <item>몸무게</item>
+        <item>키</item>
+        <item>성별</item>
+    </string-array>
+
+</resources>

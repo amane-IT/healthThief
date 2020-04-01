@@ -131,7 +131,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public ArrayList<Diary> getDiaryDataByDate(int data){
         String s;
         String d = Integer.toString(data);
-        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE FROM FOODIARYDB WHERE DATE = "+d;
+        s = " SELECT DATE, MEAL, FOOD, CAL, IMAGE, CARBO, PROTEIN, FAT, DIARY FROM FOODIARYDB WHERE DATE = "+d;
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(s,null);
         ArrayList<Diary> diaryList = new ArrayList<>();
@@ -148,6 +148,10 @@ public class DbHelper extends SQLiteOpenHelper {
             diary.setFood(cursor.getString(2));
             diary.setCal(cursor.getString(3));
             diary.setImage(cursor.getString(4));
+            diary.setCarbo(cursor.getString(5));
+            diary.setProtein(cursor.getString(6));
+            diary.setFat(cursor.getString(7));
+            diary.setDiary(cursor.getString(8));
 
             diaryList.add(diary);
         }

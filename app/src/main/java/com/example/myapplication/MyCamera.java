@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class MyCamera extends AppCompatActivity {
     Interpreter interpreter;
     //
     String[] labels = {"냉면", "크림파스타", "마카롱", "마라탕", "수플레", "돈까스", "쌀국수", "연어초밥", "만두", "토마토파스타"};
+    int first = 0;
 
     String[][] data = new String[3][8];
     int i = 0;
@@ -73,6 +75,7 @@ public class MyCamera extends AppCompatActivity {
     private int id_view;
 
     private Button item1, item2, item3, item4, save;
+    private ImageButton returnBtn;
 
     public List<foodData> foodDataList;
 
@@ -88,6 +91,8 @@ public class MyCamera extends AppCompatActivity {
         item3 = findViewById(R.id.item3);
         item4 = findViewById(R.id.item4);
         item4.setText("기타");
+
+        returnBtn = (ImageButton)findViewById(R.id.returnBtn);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         getWindow().setFormat(PixelFormat.UNKNOWN);
@@ -378,6 +383,12 @@ public class MyCamera extends AppCompatActivity {
             serving = 100;
         }
 
+        if (id_view == R.id.returnBtn)
+        {
+            resultTextView.setText(labels[first]);
+            searchData(String.valueOf(resultTextView.getText()));
+        }
+
 
     }
 
@@ -449,6 +460,7 @@ public class MyCamera extends AppCompatActivity {
             if(rank[i] == 1)
             {
                 resultTextView.setText(labels[i]);
+                first = i;
             }
 
             if(rank[i] == 2)
@@ -467,33 +479,6 @@ public class MyCamera extends AppCompatActivity {
             }
 
         }
-
-
-
-
-        /*for (int i = 0; i < probabilites.length; i++) {
-            if (probabilites[i] > maxValue) {
-                maxValue = probabilites[i];
-                forth = third;
-                third = second;
-                second = class_;
-                class_ = i;
-            }
-
-            Log.d("2: ", labels[second]);
-            Log.d("3: ", labels[third]);
-            Log.d("4: ", labels[forth]);
-            Log.d("태그: ", labels[i]);
-            Log.d("가능성: ", Float.toString(probabilites[i]));
-        }
-
-
-        resultTextView.setText(labels[class_]);
-        item1.setText(labels[second]);
-        item2.setText(labels[third]);
-        item3.setText(labels[forth]);*/
-
-
     }
 
     private ByteBuffer bitmap2bytebuffer(Bitmap bitmap, int width, int height, int color) {

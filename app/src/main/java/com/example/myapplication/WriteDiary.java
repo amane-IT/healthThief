@@ -30,7 +30,7 @@ public class WriteDiary extends AppCompatActivity {
 
     // String pic;
     String date;
-    EditText edit_food;
+    TextView edit_food;
     TextView text_cal;
     EditText edit_content;
     AlertDialog.Builder oDialog;
@@ -67,6 +67,7 @@ public class WriteDiary extends AppCompatActivity {
 
         meal = null;
         edit_food = findViewById(R.id.menu1);
+
         text_cal = findViewById(R.id.totalCal);
         edit_content = findViewById(R.id.diaryContent);
 

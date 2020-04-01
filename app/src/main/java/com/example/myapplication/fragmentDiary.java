@@ -39,7 +39,7 @@ public class fragmentDiary  extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        diaryListAdapter = new DiaryListAdapter(diaryList, getActivity());
+        //diaryListAdapter = new DiaryListAdapter(diaryList, getActivity());
     }
 
     @Override

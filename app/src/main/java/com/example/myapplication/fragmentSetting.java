@@ -39,13 +39,13 @@ public class fragmentSetting extends Fragment {
         Log.d("Count",String.valueOf(cursor.getCount()));
         if(cursor.getCount()>0){
             cursor.moveToFirst();
-            String s="0";
+            //String s="0";
             nameT.setText(cursor.getString(0));
             ageT.setText(cursor.getString(1));
             weightT.setText(cursor.getString(2));
             heightT.setText(cursor.getString(3));
-            s = cursor.getString(4);
-            if (s=="1") {sexT.setText("남");} else {sexT.setText("여");}
+            String s = cursor.getString(4);
+            if (s.equals("1")) {sexT.setText("남");} else if(s.equals("2")) {sexT.setText("여");} else{sexT.setText("미정");}
             scalT.setText(cursor.getString(5));
         }
 
@@ -68,8 +68,9 @@ public class fragmentSetting extends Fragment {
             @Override
             public void onClick(View v){
                 Log.i("설정 변경 버튼","클릭함");
-                Intent intent = new Intent(getActivity(),changeProfile.class);
-                startActivity(intent);
+
+                ChangeProfileDialog changeProfileDialog = new ChangeProfileDialog();
+                changeProfileDialog.show(getActivity().getSupportFragmentManager(),"tag");
             }
 
         });

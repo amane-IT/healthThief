@@ -20,10 +20,20 @@
         >
 
         <Button
-            android:id="@+id/getGraph"
-            android:layout_width="wrap_content"
+            android:id="@+id/getTrend"
+            android:layout_width="240sp"
             android:layout_height="wrap_content"
-            android:text="Graph"
+            android:text="Day"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:background="@drawable/default_green_bt"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getGraph"
+            android:layout_width="240sp"
+            android:layout_height="wrap_content"
+            android:text="Week"
             android:textSize="50sp"
             android:padding="30dp"
             android:background="@drawable/default_green_bt"
@@ -31,19 +41,9 @@
 
         <Button
             android:id="@+id/getMonthly"
-            android:layout_width="wrap_content"
+            android:layout_width="240sp"
             android:layout_height="wrap_content"
             android:text="Month"
-            android:textSize="50sp"
-            android:padding="30dp"
-            android:background="@drawable/default_green_bt"
-            android:layout_marginBottom="20dp"/>
-
-        <Button
-            android:id="@+id/getTrend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trend"
             android:textSize="50sp"
             android:padding="30dp"
             android:background="@drawable/default_green_bt"
