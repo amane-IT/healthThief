@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -78,6 +79,11 @@ public class MyCamera extends AppCompatActivity {
     private ImageButton returnBtn;
 
     public List<foodData> foodDataList;
+
+    private File tempFile;
+
+    private int PICK_PICTURE_FROM_GALLERY = 1111;
+    private int PICK_PICTURE_FROM_CAMERA = 2222;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,114 +173,118 @@ public class MyCamera extends AppCompatActivity {
             /**
              * 추가할 음식을 물어보는 코드 */
 
-            //몇인분을 먹었나요
-            foodDialog.setContentView(R.layout.serving_dialog);
-            RadioGroup radioGroup = foodDialog.findViewById(R.id.serve);
-            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(RadioGroup group, int checkedId) {
-                    if (checkedId == R.id.quart)
-                        servings = 0.25;
-                    else if (checkedId == R.id.half)
-                        servings = 0.5;
-                    else if (checkedId == R.id.one)
-                        servings = 1;
-                    else if (checkedId == R.id.two)
-                        servings = 2;
 
-                    Log.d("serve: ", Double.toString(servings));
-                }
-            });
+            if(iv_food.getDrawable() != null)
+            {
+                //몇인분을 먹었나요
+                foodDialog.setContentView(R.layout.serving_dialog);
+                RadioGroup radioGroup = foodDialog.findViewById(R.id.serve);
+                radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        if (checkedId == R.id.quart)
+                            servings = 0.25;
+                        else if (checkedId == R.id.half)
+                            servings = 0.5;
+                        else if (checkedId == R.id.one)
+                            servings = 1;
+                        else if (checkedId == R.id.two)
+                            servings = 2;
 
-            Button btn_ok = foodDialog.findViewById(R.id.btn_ok);
-            btn_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("serve: ", Double.toString(servings));
-                    foodDialog.dismiss();
+                        Log.d("serve: ", Double.toString(servings));
+                    }
+                });
 
-                    DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Button next = (Button) findViewById(R.id.next);
-                            next.setVisibility(View.VISIBLE);
-                            save = (Button) findViewById(R.id.save);
-                            save.setVisibility(View.INVISIBLE);
-                            dialogInterface.dismiss();
+                Button btn_ok = foodDialog.findViewById(R.id.btn_ok);
+                btn_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("serve: ", Double.toString(servings));
+                        foodDialog.dismiss();
+
+                        DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Button next = (Button) findViewById(R.id.next);
+                                next.setVisibility(View.VISIBLE);
+                                save = (Button) findViewById(R.id.save);
+                                save.setVisibility(View.INVISIBLE);
+                                dialogInterface.dismiss();
+                            }
+                        };
+
+                        //음식 추가를 3개 이상하려 할 경우
+                        if (i >= 3) {
+                            new AlertDialog.Builder(MyCamera.this)
+                                    .setTitle("더이상 추가할 수 없습니다.")
+                                    .setPositiveButton("돌아가기", cancel)
+                                    .show();
                         }
-                    };
 
-                    //음식 추가를 3개 이상하려 할 경우
-                    if (i >= 3) {
+                        //음식 추가는 임의로 3가지까지만..
+                        else if (i < 3) {
+
+
+                            Log.d("food_data: ", foodDataList.get(1).getName());
+                            Log.d("serve: ", Double.toString(servings));
+
+                            //사진은.. 확인 버튼 눌렀을시에만 저장됩니다.
+                            Drawable d = iv_food.getDrawable();
+                            Bitmap photo = ((BitmapDrawable)d).getBitmap();
+                            String strFilePath = Environment.getExternalStorageDirectory() + "/foodiary/";
+                            long now = currentTimeMillis();
+                            Date mDate = new Date(now);
+                            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm").format(mDate);
+                            String fileName = "foodiary" + timeStamp + ".jpg";
+                            SaveBitmapToFileCache(photo, strFilePath, fileName);
+
+                            //data = { i, 이미지 경로, 이름, 칼로리, 탄수화물, 단백질, 지방, 식이섬유, 당, 나트륨, 1인분 양 }
+                            data[i][0] = Integer.toString(i);
+                            data[i][1] = strFilePath + fileName;
+                            data[i][2] = String.valueOf(resultTextView.getText());
+                            data[i][3] = Integer.toString(kcal);
+                            data[i][4] = Float.toString(carbo);
+                            data[i][5] = Float.toString(protein);
+                            data[i][6] = Float.toString(fat);
+                            data[i][7] = Double.toString(serving * servings);
+
+
+                            Log.d("경로: ", data[i][1]);
+                            Log.d("탄수: ", data[i][4]);
+                            Log.d("단백질: ", data[i][5]);
+                            i++;
+
+
+                        }
+
+                        DialogInterface.OnClickListener add_data = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //여기에 정보를 이차원 배열에 추가하는 코드를 짜자
+                                resultTextView.setText("");
+                                iv_food.setImageBitmap(null);
+                            }
+                        };
+
+                        DialogInterface.OnClickListener save_data = new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Button next = (Button) findViewById(R.id.next);
+                                next.setVisibility(View.VISIBLE);
+                                dialogInterface.dismiss();
+                            }
+                        };
+
                         new AlertDialog.Builder(MyCamera.this)
-                                .setTitle("더이상 추가할 수 없습니다.")
-                                .setPositiveButton("돌아가기", cancel)
+                                .setTitle("더 추가하시겠습니까?")
+                                .setPositiveButton("네", add_data)
+                                .setNegativeButton("아니오", save_data)
                                 .show();
                     }
+                });
 
-                    //음식 추가는 임의로 3가지까지만..
-                    else if (i < 3) {
-
-
-                        Log.d("food_data: ", foodDataList.get(1).getName());
-                        Log.d("serve: ", Double.toString(servings));
-
-                        //사진은.. 확인 버튼 눌렀을시에만 저장됩니다.
-                        Drawable d = iv_food.getDrawable();
-                        Bitmap photo = ((BitmapDrawable)d).getBitmap();
-                        String strFilePath = Environment.getExternalStorageDirectory() + "/foodiary/";
-                        long now = currentTimeMillis();
-                        Date mDate = new Date(now);
-                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HH:mm").format(mDate);
-                        String fileName = "foodiary" + timeStamp + ".jpg";
-                        SaveBitmapToFileCache(photo, strFilePath, fileName);
-
-                        //data = { i, 이미지 경로, 이름, 칼로리, 탄수화물, 단백질, 지방, 식이섬유, 당, 나트륨, 1인분 양 }
-                        data[i][0] = Integer.toString(i);
-                        data[i][1] = strFilePath + fileName;
-                        data[i][2] = String.valueOf(resultTextView.getText());
-                        data[i][3] = Integer.toString(kcal);
-                        data[i][4] = Float.toString(carbo);
-                        data[i][5] = Float.toString(protein);
-                        data[i][6] = Float.toString(fat);
-                        data[i][7] = Double.toString(serving * servings);
-
-
-                        Log.d("경로: ", data[i][1]);
-                        Log.d("탄수: ", data[i][4]);
-                        Log.d("단백질: ", data[i][5]);
-                        i++;
-
-
-                    }
-
-                    DialogInterface.OnClickListener add_data = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            //여기에 정보를 이차원 배열에 추가하는 코드를 짜자
-                            resultTextView.setText("");
-                            iv_food.setImageBitmap(null);
-                        }
-                    };
-
-                    DialogInterface.OnClickListener save_data = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Button next = (Button) findViewById(R.id.next);
-                            next.setVisibility(View.VISIBLE);
-                            dialogInterface.dismiss();
-                        }
-                    };
-
-                    new AlertDialog.Builder(MyCamera.this)
-                            .setTitle("더 추가하시겠습니까?")
-                            .setPositiveButton("네", add_data)
-                            .setNegativeButton("아니오", save_data)
-                            .show();
-                }
-            });
-
-            foodDialog.show();
+                foodDialog.show();
+            }
 
             DialogInterface.OnClickListener returnBack = new DialogInterface.OnClickListener() {
                 @Override
@@ -293,6 +303,10 @@ public class MyCamera extends AppCompatActivity {
             }
         }
 
+
+        /**
+         * 다이어리화면으로 데이터 전송 & 넘어감
+         * */
         if(id_view == R.id.next)
         {
             Intent goDiary = new Intent(MyCamera.this, WriteDiary.class);
@@ -325,14 +339,71 @@ public class MyCamera extends AppCompatActivity {
             Log.d("넘어감: ", "간다");
 
         }
-        //else
+
+
+        /**
+         * 앨범이나 카메라에서 사진 가져오는 기능
+         * */
         if(id_view == R.id.picBtn)
         {
-            CropImage.activity()
+            foodDialog.setContentView(R.layout.pick_dialog);
+            Button gallery = (Button)foodDialog.findViewById(R.id.gallery);
+
+            //갤러리에서 사진 선택
+            gallery.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType("image/*");
+                    startActivityForResult(intent, PICK_PICTURE_FROM_GALLERY);
+                    foodDialog.dismiss();
+                }
+            });
+
+            //카메라에서 사진 선택
+            Button camera = (Button)foodDialog.findViewById(R.id.camera);
+            camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    try {
+
+                        tempFile = createImageFile();
+                    } catch (IOException e) {
+                        finish();
+                        e.printStackTrace();
+                    }
+                    if (tempFile != null) {
+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+                            Uri photoUri = FileProvider.getUriForFile(getApplicationContext(),
+                                    "myapplication.provider", tempFile);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                            startActivityForResult(intent, PICK_PICTURE_FROM_CAMERA);
+
+                        } else {
+                            Uri photoUri = Uri.fromFile(tempFile);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                            startActivityForResult(intent, PICK_PICTURE_FROM_CAMERA);
+
+                        }
+                    }
+                    foodDialog.dismiss();
+                }
+            });
+
+            /**CropImage.activity()
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .start(this);
+             */
+
+            foodDialog.show();
         }
 
+        /**
+         * 머신러닝 결과 후보군들
+         * */
         if (id_view == R.id.item1){
             resultTextView.setText(item1.getText());
             searchData(String.valueOf(resultTextView.getText()));
@@ -382,7 +453,6 @@ public class MyCamera extends AppCompatActivity {
             fat = 0;
             serving = 100;
         }
-
         if (id_view == R.id.returnBtn)
         {
             resultTextView.setText(labels[first]);
@@ -392,11 +462,33 @@ public class MyCamera extends AppCompatActivity {
 
     }
 
-    //이미지를 받아오면 크롭을 하자
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
 
+        if (requestCode == PICK_PICTURE_FROM_GALLERY)
+        {
+            Uri uri = imageReturnedIntent.getData();
+            if (uri != null) {
+                CropImage.activity(uri)
+                        .start(this);
+            }
+            else
+            {
+                Intent intent = new Intent(this, MyCamera.class);
+                startActivity(intent);
+            }
+        }
+
+        if (requestCode == PICK_PICTURE_FROM_CAMERA)
+        {
+            Uri uri = FileProvider.getUriForFile(this, "myapplication.provider", tempFile);
+            CropImage.activity(uri)
+                    .start(this);
+        }
+
+        //이미지를 받아오면 크롭을 하자
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(imageReturnedIntent);
             if (resultCode == RESULT_OK) {
@@ -592,5 +684,22 @@ public class MyCamera extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private File createImageFile() throws IOException {
+
+        // 이미지 파일 이름 ( foodiary시간_ )
+        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
+        String imageFileName = "foodiary" + timeStamp + "_";
+
+        // 이미지가 저장될 파일 이름 ( foodiary )
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/foodiary/");
+        if (!storageDir.exists()) storageDir.mkdirs();
+
+        // 빈 파일 생성
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        Log.d("경로", "createImageFile : " + image.getAbsolutePath());
+
+        return image;
     }
 }
