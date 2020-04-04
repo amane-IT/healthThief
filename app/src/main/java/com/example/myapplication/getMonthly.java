@@ -53,11 +53,12 @@ public class getMonthly extends AppCompatActivity{
 
 
         // https://github.com/prolificinteractive/material-calendarview
-              // https://dpdpwl.tistory.com/3
+        // https://dpdpwl.tistory.com/3
+        // https://github.com/prolificinteractive/material-calendarview/issues/617
         calendarView = findViewById(R.id.calendarView);
         calendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2020, 2, 1))
+                .setMinimumDate(CalendarDay.from(2020, 4, 1))
                 .setMaximumDate(CalendarDay.from(2030, 11, 31))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();

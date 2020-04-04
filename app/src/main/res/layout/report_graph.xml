@@ -10,14 +10,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/default_green_bt"
+        android:layout_margin="10sp"
         android:text="back">
 
     </Button>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:text="WEEKLY REPORT"
+        android:textSize="25sp"/>
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="300sp"
         android:gravity="center_vertical"
         android:layout_margin="16sp"/>
 

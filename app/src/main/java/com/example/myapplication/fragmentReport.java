@@ -31,7 +31,7 @@ public class fragmentReport extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.i("Report","Start Graph");
-                Intent intent = new Intent(getActivity(),getGraph.class);
+                Intent intent = new Intent(getActivity(),getTrend.class);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -42,7 +42,7 @@ public class fragmentReport extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.i("Report","Start Monthly");
-                Intent intent = new Intent(getActivity(),getMonthly.class);
+                Intent intent = new Intent(getActivity(),getGraph.class);
                 startActivity(intent);
                 getActivity().finish();
             }
@@ -52,7 +52,7 @@ public class fragmentReport extends Fragment{
             @Override
             public void onClick(View v) {
                 Log.i("Report","Start Trend");
-                Intent intent = new Intent(getActivity(),getTrend.class);
+                Intent intent = new Intent(getActivity(),getMonthly.class);
                 startActivity(intent);
                 getActivity().finish();
             }
