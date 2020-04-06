@@ -21,7 +21,7 @@
 
     </style>
 
-
+    <!--Font Style Total Customize-->
     <style name="hannaTextViewStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="android:fontFamily">@font/hanna</item>
     </style>
@@ -37,8 +37,5 @@
     <style name="hannaCheckboxStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
         <item name="android:fontFamily">@font/hanna</item>
     </style>
-
-
-
 
 </resources>

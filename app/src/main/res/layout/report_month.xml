@@ -10,42 +10,147 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/default_green_bt"
+        android:layout_margin="10sp"
         android:text="back">
 
     </Button>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:text="MONTHLY REPORT"
+        android:textSize="25sp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:layout_marginTop="10sp"
+        android:layout_marginBottom="10sp">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GREAT"
-            android:textColor="@android:color/holo_green_dark"/>
+            android:orientation="horizontal"
+            android:gravity="center">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="NICE"
-            android:textColor="@android:color/holo_orange_light"/>
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="GREAT"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:textColor="@android:color/holo_green_dark"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="NICE"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:textColor="@android:color/holo_orange_light"/>
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="BAD"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:textColor="@android:color/holo_red_dark"/>
+
+            <TextView
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="NONE"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                android:textColor="@android:color/darker_gray"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="BAD"
-            android:textColor="@android:color/holo_red_dark"/>
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/month_green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:background="@drawable/rounded_textview"
+                android:text="12"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"/>
+
+            <TextView
+                android:id="@+id/month_yellow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:background="@drawable/rounded_textview2"
+                android:text="8"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"
+                />
+
+            <TextView
+                android:id="@+id/month_red"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:background="@drawable/rounded_textview3"
+                android:text="2"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"/>
+
+            <TextView
+                android:id="@+id/month_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:background="@drawable/rounded_textview4"
+                android:text="8"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:layout_marginStart="5sp"
+                android:layout_marginEnd="5sp"/>
+
+        </LinearLayout>
+
 
     </LinearLayout>
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/calendarView"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:mcv_showOtherDates="defaults"
-        app:mcv_selectionColor="#00F"
-        />
+        android:layout_height="wrap_content">
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_showOtherDates="defaults"
+            app:mcv_selectionColor="#00F"
+            />
+
+
+    </LinearLayout>
+
 
 
     <!-- calander customize link : https://github.com/Applandeo/Material-Calendar-View -->
