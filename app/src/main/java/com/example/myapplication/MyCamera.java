@@ -60,7 +60,22 @@ public class MyCamera extends AppCompatActivity {
     //
     Interpreter interpreter;
     //
-    String[] labels = {"냉면", "크림파스타", "마카롱", "마라탕", "수플레", "돈까스", "쌀국수", "연어초밥", "만두", "토마토파스타"};
+
+    //50가지 리스트
+    String[] labels = { "아포카토", "사과", "사과파이", "아보카도덮밥", "짜장면",
+                        "불고기", "콘푸로스트", "짬뽕", "콘치즈", "카레",
+                        "떡국", "도넛", "감바스", "장어구이", "유부초밥",
+                        "김밥", "차돌박이된장찌개", "미역국", "찹쌀떡", "라면",
+                        "양념치킨", "간장게장", "스테이크", "딸기에이드", "딸기케이크",
+                        "군고구마", "방울토마토", "우동", "와플", "치즈버거",
+                        "초코머핀", "물냉면", "크림파스타", "크로와상", "김치볶음밥",
+                        "잡채", "마카롱", "오므라이스", "수플레", "페퍼로니피자",
+                        "돈까스", "쌀국수", "샐러드", "연어초밥", "만두",
+                        "순대", "타코야키", "탕수육", "토마토파스타", "육회" };
+
+
+    //10가지 리스트
+    //String[] labels = {"냉면", "크림파스타", "마카롱", "마라탕", "수플레", "돈까스", "쌀국수", "연어초밥", "만두", "토마토파스타"};
     int first = 0;
 
     String[][] data = new String[3][8];
@@ -112,7 +127,9 @@ public class MyCamera extends AppCompatActivity {
 
         try {
             Interpreter.Options options = new Interpreter.Options();
-            interpreter = new Interpreter(loadModelFile("mobilenet_v2.tflite"), options);
+            interpreter = new Interpreter(loadModelFile("food50_405.tflite"), options);
+            //원래 10가지
+            //interpreter = new Interpreter(loadModelFile("mobilenet_v2.tflite"), options);
         }
         catch(IOException ex){
             Log.d("app", ex.toString());
@@ -191,7 +208,7 @@ public class MyCamera extends AppCompatActivity {
                         else if (checkedId == R.id.two)
                             servings = 2;
 
-                        Log.d("serve: ", Double.toString(servings));
+                        //Log.d("serve: ", Double.toString(servings));
                     }
                 });
 
@@ -199,7 +216,7 @@ public class MyCamera extends AppCompatActivity {
                 btn_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("serve: ", Double.toString(servings));
+                       // Log.d("serve: ", Double.toString(servings));
                         foodDialog.dismiss();
 
                         DialogInterface.OnClickListener cancel = new DialogInterface.OnClickListener() {
@@ -225,8 +242,9 @@ public class MyCamera extends AppCompatActivity {
                         else if (i < 3) {
 
 
-                            Log.d("food_data: ", foodDataList.get(1).getName());
-                            Log.d("serve: ", Double.toString(servings));
+                           // Log.d("food_data: ", foodDataList.get(1).getName());
+                            //
+                            // Log.d("serve: ", Double.toString(servings));
 
                             //사진은.. 확인 버튼 눌렀을시에만 저장됩니다.
                             Drawable d = iv_food.getDrawable();
@@ -248,10 +266,9 @@ public class MyCamera extends AppCompatActivity {
                             data[i][6] = Float.toString(fat);
                             data[i][7] = Double.toString(serving * servings);
 
-
-                            Log.d("경로: ", data[i][1]);
-                            Log.d("탄수: ", data[i][4]);
-                            Log.d("단백질: ", data[i][5]);
+                            //Log.d("경로: ", data[i][1]);
+                            //Log.d("탄수: ", data[i][4]);
+                            //Log.d("단백질: ", data[i][5]);
                             i++;
 
 
@@ -310,10 +327,10 @@ public class MyCamera extends AppCompatActivity {
         if(id_view == R.id.next)
         {
             Intent goDiary = new Intent(MyCamera.this, WriteDiary.class);
-            Log.d("넘어감: ", "간다");
+            //Log.d("넘어감: ", "간다");
             for (int j = 0; j < i; j++)
             {
-                Log.d("food_data: ", foodDataList.get(1).getName());
+                //Log.d("food_data: ", foodDataList.get(1).getName());
 
                 String dkey = "food_image" + Integer.toString(j);
                 String nkey = "food_name" + Integer.toString(j);
@@ -323,7 +340,7 @@ public class MyCamera extends AppCompatActivity {
                 String Fatkey = "food_fat" + j;
                 String Servingkey = "food_serving" + j;
 
-                Log.d("Carbo Data: ", data[j][4]);
+                //Log.d("Carbo Data: ", data[j][4]);
                 goDiary.putExtra(dkey, data[j][1]);
                 goDiary.putExtra(nkey, data[j][2]);
                 goDiary.putExtra(kkey, data[j][3]);
@@ -515,25 +532,25 @@ public class MyCamera extends AppCompatActivity {
         int color = 3;
         final Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
         ByteBuffer input = bitmap2bytebuffer(scaledBitmap, width, height, color);
-        float[][] output = new float[1][10];
+        float[][] output = new float[1][50];
         //
         interpreter.run(input, output);
         //
         float[] probabilites = output[0];
-        int[] rank = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-        int class_ = 0;
-        int second = 0;
-        int third = 0;
-        int forth = 0;
+        int[] rank = {  1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                        1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 
 
         for (int i = 0; i < probabilites.length; i++) {
 
-            double standard_rate = probabilites[i];//기준학생점수
+            double standard_rate = probabilites[i];//기준점수
 
             for (int j = i; j < probabilites.length; j++) {
 
-                double compare_rate = probabilites[j];//비교학생점수
+                double compare_rate = probabilites[j];//비교점수
 
                 if (standard_rate < compare_rate) {
 
@@ -569,7 +586,10 @@ public class MyCamera extends AppCompatActivity {
             {
                 item3.setText(labels[i]);
             }
-
+        }
+        for (int k = 0; k < rank.length; k++)
+        {
+            Log.d(labels[k], String.valueOf(probabilites[k]));
         }
     }
 
@@ -613,7 +633,7 @@ public class MyCamera extends AppCompatActivity {
         //DB에 있는 값들을 model에 적용하여 넣음
         foodDataList = mDBHelper.getTableData();
 
-        Log.d("food_data: ", Float.toString(foodDataList.get(8).getCarbo()));
+        //Log.d("food_data: ", Float.toString(foodDataList.get(8).getCarbo()));
 
         //DB닫기
         mDBHelper.close();
@@ -622,16 +642,16 @@ public class MyCamera extends AppCompatActivity {
     //찾아라 머신러닝 결과값
     private void searchData(String name)
     {
-        Log.d("크기: ", String.valueOf(foodDataList.size()));
-        Log.d("이름: ", name);
+        //Log.d("크기: ", String.valueOf(foodDataList.size()));
+        //Log.d("이름: ", name);
 
         for (int k = 0; k < foodDataList.size(); k++)
         {
-            Log.d("k: ", foodDataList.get(k).getName());
+            //Log.d("k: ", foodDataList.get(k).getName());
 
             if(foodDataList.get(k).getName().equals(name))
             {
-                Log.d("food_data: ", foodDataList.get(k).getName());
+                //Log.d("food_data: ", foodDataList.get(k).getName());
 
                 kcal = foodDataList.get(k).getKcal();
                 carbo = foodDataList.get(k).getCarbo();
@@ -648,9 +668,9 @@ public class MyCamera extends AppCompatActivity {
                 fat = 0;
                 serving = 100;
             }
-            Log.d("칼로리: ", Integer.toString(kcal));
-            Log.d("탄수: ", Float.toString(carbo));
-            Log.d("단백질: ", Float.toString(protein));
+            //Log.d("칼로리: ", Integer.toString(kcal));
+            //Log.d("탄수: ", Float.toString(carbo));
+            //Log.d("단백질: ", Float.toString(protein));
         }
     }
 
@@ -698,6 +718,7 @@ public class MyCamera extends AppCompatActivity {
 
         // 빈 파일 생성
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
         Log.d("경로", "createImageFile : " + image.getAbsolutePath());
 
         return image;
