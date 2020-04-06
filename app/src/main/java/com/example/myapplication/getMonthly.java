@@ -3,7 +3,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Toast;
@@ -35,8 +37,6 @@ public class getMonthly extends AppCompatActivity{
 
 
 
-
-
         // 전 화면으로 돌아감
         back = (Button) findViewById(R.id.monthBack);
         back.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,7 @@ public class getMonthly extends AppCompatActivity{
         calendarView = findViewById(R.id.calendarView);
         calendarView.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2020, 4, 1))
+                .setMinimumDate(CalendarDay.from(2020, 3, 1))
                 .setMaximumDate(CalendarDay.from(2030, 11, 31))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
@@ -76,6 +76,19 @@ public class getMonthly extends AppCompatActivity{
         /**
          * 넘겨주고 싶다!! 넘겨주고 싶ㅍ다!!
          */
+
+        // dialog 사이즈 조정
+        // https://wimir-dev.tistory.com/11
+        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        MonthlyDialog mdialog = new MonthlyDialog(gm);
+        mdialog.setCancelable(false);
+        WindowManager.LayoutParams wm = mdialog.getWindow().getAttributes();
+        wm.copyFrom(mdialog.getWindow().getAttributes());
+        wm.width = width/2;
+        wm.height = height/2;
+
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -84,13 +97,15 @@ public class getMonthly extends AppCompatActivity{
                 // MonthlyDialog로 해당 날짜의 db 값 넘겨줌
                 // https://hyongdoc.tistory.com/184 - arraylist 넘겨주기
                 // https://injunech.tistory.com/241
+
+                //위에꺼 안됨... 이걸로 다시 시도
+                //https://stackoverflow.com/questions/6124989/pass-data-from-activity-to-dialog/42511882
                 int dateToDialog = Integer.parseInt(format.format(date.getDate()));
                 diaries = DBHelper.getDiaryDataByDate(dateToDialog);
                 Intent it = new Intent(gm, MonthlyDialog.class);
                 it.putExtra("diaries", diaries);
 
-                MonthlyDialog mdialog = new MonthlyDialog(gm);
-                mdialog.setCancelable(false);
+
                 mdialog.show();
 
             }

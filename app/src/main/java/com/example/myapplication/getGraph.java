@@ -13,19 +13,23 @@ import android.view.View;
 import android.widget.Button;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static java.security.AccessController.getContext;
 
@@ -79,23 +83,23 @@ public class getGraph extends AppCompatActivity {
         // 일월화수목금토 순으로 데이터 가져오기
         // 데이터가 없는 날짜면 100 으로 처리 - 차후 변경
         int day = 0;
-        while(true){
+        while(cursorCount!=day){
             if (cursor.getString(0).equals(date)){
-
-                calories.add(new Entry(Float.parseFloat(date),cursor.getFloat(1)));
+                Log.d("GRAPH DATE IS: ",date);
+                calories.add(new Entry(day+1,cursor.getFloat(1)));
                 time.add(Calendar.DATE,1);
                 date = format.format(time.getTime());
                 cursor.moveToNext();
                 day++;
             }
             else{
-                calories.add(new Entry(Float.parseFloat(date),0));
+                calories.add(new Entry(day+1,0));
                 time.add(Calendar.DATE,1);
                 date = format.format(time.getTime());
                 day++;
             }
 
-            if (day==6) break;
+            if (day==8) break;
         }
 
 
@@ -108,18 +112,26 @@ public class getGraph extends AppCompatActivity {
 
          */
 
+
         chart.setScaleEnabled(false); // 확대 축소 불가능하게
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // x축 표시 위치 아래로
         xAxis.setLabelCount(7,true); // x축 라벨 최대 갯수
+        xAxis.setAxisMaximum(7f);
+        xAxis.setAxisMinimum(1f);
+        xAxis.setDrawGridLines(false); // x축 그리드 삭제
+
+        //IAxisValueFormatter AxisFormat = new AxisFormat();
+        //xAxis.setValueFormatter(AxisFormat);
 
         YAxis yAxisLeft = chart.getAxisLeft();
-        yAxisLeft.setMaxWidth(300f);
+        yAxisLeft.setMaxWidth(40f);
         yAxisLeft.setAxisMinimum(0);
-        yAxisLeft.setAxisMaximum(1250f);
+        yAxisLeft.setAxisMaximum(2000f);
         yAxisLeft.setSpaceTop(10f);
         yAxisLeft.setSpaceBottom(10f);
+        yAxisLeft.setDrawGridLines(false); // y축 그리드 삭제
         YAxis yAxisRight = chart.getAxisRight();
         yAxisRight.setDrawLabels(false);
         yAxisRight.setDrawGridLines(false);
@@ -134,6 +146,8 @@ public class getGraph extends AppCompatActivity {
         LineDataSet dataSet = new LineDataSet(calories, "Weekly Calorie");
         dataSet.setDrawCircles(true);
         dataSet.setDrawCircleHole(true);
+        dataSet.setCircleRadius(5f);
+        dataSet.setCircleHoleRadius(3f);
         dataSet.setCircleColor(Color.GRAY);
         dataSet.setDrawFilled(true); // 그래프 아래 색 채우기
         dataSet.setColor(Color.GRAY);
@@ -147,6 +161,19 @@ public class getGraph extends AppCompatActivity {
 
 
     }
+
+    /*
+    public class  AxisFormat implements IAxisValueFormatter{
+        @Override
+        public String getFormattedValue(float value, AxisBase axis){
+            Date date = new Date((long)value);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd", Locale.ENGLISH);
+            return sdf.format(date);
+
+        }
+    }
+
+     */
 
 
 
