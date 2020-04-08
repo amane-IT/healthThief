@@ -80,6 +80,8 @@ public class getGraph extends AppCompatActivity {
         cursor.moveToFirst();
 
 
+        //첫째날 데이터 없고 둘째날 있으면 그래프가 제대로 안 뜨는 문제 발견,,,
+
         // 일월화수목금토 순으로 데이터 가져오기
         // 데이터가 없는 날짜면 100 으로 처리 - 차후 변경
         int day = 0;

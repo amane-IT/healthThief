@@ -96,7 +96,7 @@ public class fragmentDiary  extends Fragment {
             public void onClick(View v)
             {
                 Log.i("Diary BUTTON","Date Picking");
-                DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, 2019, 11, 01);
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(), listener, 2020, 3, 01);
                 dialog.show();
             }
         });
