@@ -1,13 +1,20 @@
 package com.example.myapplication;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,34 +32,56 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class getTrend extends AppCompatActivity {
+public class getTrend extends DialogFragment {
 
+    private Fragment fragement;
     PieChart pieChart;
     getTrend gt =this;
     Button back;
 
 
+    // Dialog Size revise
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.report_trend);
+    public void onResume() {
 
-        // 전 화면으로 돌아감
-        back = (Button) findViewById(R.id.trendBack);
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        getDialog().getWindow().setLayout(width, height);
+
+        super.onResume();
+
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.report_trend,container,false);
+        fragement = getActivity().getSupportFragmentManager().findFragmentByTag("tag");
+
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.report_trend);
+
+        Bundle mArgs = getArguments();
+        String bun_date = mArgs.getString("date");
+        Log.d("GET DATE FROM REPORT: ", bun_date);
+
+
+       // 전 화면으로 돌아감
+        back = (Button) view.findViewById(R.id.trendBack);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent intentHome = new Intent(gt,MainActivity.class);
-                intentHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intentHome.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intentHome);
-                finish();
+                dismiss();
+
             }
         });
 
+
+
         // get data from Diary DB
-        // 하루동안 섭취한 탄/단/지를 원그래프로 확인
+        // 특정 날짜동안 섭취한 탄/단/지를 원그래프로 확인
         // 부족한 영양소를 setText 로 알려줌 (탄단지 비율 5:3:2)
 
         //TextView advice = (TextView) findViewById(R.id.giveAdvice);
@@ -64,13 +93,10 @@ public class getTrend extends AppCompatActivity {
         float fat = 0;
         float total_cal = 0;
 
-        SimpleDateFormat format = new SimpleDateFormat ("yyyyMMdd");
-        Calendar time = Calendar.getInstance();
-        String date = format.format(time.getTime());
 
-        DbHelper DBHelper = new DbHelper(this,"TEST",null,DbHelper.DB_VERSION);
+        DbHelper DBHelper = new DbHelper(getActivity(),"TEST",null,DbHelper.DB_VERSION);
         SQLiteDatabase db = DBHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(" SELECT CARBO, PROTEIN, FAT, CAL FROM FOODIARYDB WHERE DATE ="+date,null);
+        Cursor cursor = db.rawQuery(" SELECT CARBO, PROTEIN, FAT, CAL FROM FOODIARYDB WHERE DATE ="+bun_date,null);
 
 
         if(cursor.getCount()>0){
@@ -115,18 +141,18 @@ public class getTrend extends AppCompatActivity {
 
             // TODO: ProgressBar get Nutrient Data from FOODIARYDB
 
-            TextView kcalS = (TextView) findViewById(R.id.kcalStart);
-            TextView carboS = (TextView) findViewById(R.id.carboStart);
-            TextView proS = (TextView) findViewById(R.id.proteinStart);
-            TextView fatS = (TextView) findViewById(R.id.fatStart);
-            TextView kcalE = (TextView) findViewById(R.id.kcalEnd);
-            TextView carboE = (TextView) findViewById(R.id.carboEnd);
-            TextView proE = (TextView) findViewById(R.id.proteinEnd);
-            TextView fatE = (TextView) findViewById(R.id.fatEnd);
-            ProgressBar kcalP = (ProgressBar) findViewById(R.id.kcalProgress);
-            ProgressBar carboP = (ProgressBar) findViewById(R.id.carbonProgress);
-            ProgressBar proP = (ProgressBar) findViewById(R.id.proteinProgress);
-            ProgressBar fatP = (ProgressBar) findViewById(R.id.fatProgress);
+            TextView kcalS = (TextView) view.findViewById(R.id.kcalStart);
+            TextView carboS = (TextView) view.findViewById(R.id.carboStart);
+            TextView proS = (TextView) view.findViewById(R.id.proteinStart);
+            TextView fatS = (TextView) view.findViewById(R.id.fatStart);
+            TextView kcalE = (TextView) view.findViewById(R.id.kcalEnd);
+            TextView carboE = (TextView) view.findViewById(R.id.carboEnd);
+            TextView proE = (TextView) view.findViewById(R.id.proteinEnd);
+            TextView fatE = (TextView) view.findViewById(R.id.fatEnd);
+            ProgressBar kcalP = (ProgressBar) view.findViewById(R.id.kcalProgress);
+            ProgressBar carboP = (ProgressBar) view.findViewById(R.id.carbonProgress);
+            ProgressBar proP = (ProgressBar) view.findViewById(R.id.proteinProgress);
+            ProgressBar fatP = (ProgressBar) view.findViewById(R.id.fatProgress);
 
             int kcalPer = (int)((total_cal/scal)*100);
             int carboPer = (int)((carbon/proper_c)*100);
@@ -149,7 +175,7 @@ public class getTrend extends AppCompatActivity {
             proE.setText(String.valueOf(proper_p));
             fatE.setText(String.valueOf(proper_f));
 
-            Cursor progressStart = db.rawQuery(" SELECT CAL, CARBO, PROTEIN, FAT FROM FOODIARYDB WHERE DATE ="+date,null);
+            Cursor progressStart = db.rawQuery(" SELECT CAL, CARBO, PROTEIN, FAT FROM FOODIARYDB WHERE DATE ="+bun_date,null);
             Cursor info = db.rawQuery("SELECT SCAL FROM INFODB",null);
 
 
@@ -185,7 +211,7 @@ public class getTrend extends AppCompatActivity {
 
 
         // making pieChart
-        pieChart = (PieChart)findViewById(R.id.piechart);
+        pieChart = (PieChart)view.findViewById(R.id.piechart);
 
         // 퍼센티지
         pieChart.setUsePercentValues(true);
@@ -236,5 +262,6 @@ public class getTrend extends AppCompatActivity {
 
         // 당일 먹은 음식 탄단지 원그래프로 알려주고 부족한 영양소 알려주기
 
+        return view;
     }
 }

@@ -2,6 +2,7 @@ package com.example.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -79,15 +80,6 @@ public class getMonthly extends AppCompatActivity{
 
         // dialog 사이즈 조정
         // https://wimir-dev.tistory.com/11
-        DisplayMetrics dm = getApplicationContext().getResources().getDisplayMetrics();
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
-        MonthlyDialog mdialog = new MonthlyDialog(gm);
-        mdialog.setCancelable(false);
-        WindowManager.LayoutParams wm = mdialog.getWindow().getAttributes();
-        wm.copyFrom(mdialog.getWindow().getAttributes());
-        wm.width = width/2;
-        wm.height = height/2;
 
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
@@ -102,11 +94,23 @@ public class getMonthly extends AppCompatActivity{
                 //https://stackoverflow.com/questions/6124989/pass-data-from-activity-to-dialog/42511882
                 int dateToDialog = Integer.parseInt(format.format(date.getDate()));
                 diaries = DBHelper.getDiaryDataByDate(dateToDialog);
-                Intent it = new Intent(gm, MonthlyDialog.class);
-                it.putExtra("diaries", diaries);
 
+                if(!diaries.isEmpty()){
 
-                mdialog.show();
+                    Bundle args = new Bundle();
+                    args.putString("date",String.valueOf(dateToDialog));
+
+                    getTrend getTrend = new getTrend();
+                    getTrend.setArguments(args);
+                    getTrend.show(gm.getSupportFragmentManager(),"tag");
+
+                }
+                else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(gm);
+                    builder.setTitle("Sorry!").setMessage("There is no Data!");
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
 
             }
         });

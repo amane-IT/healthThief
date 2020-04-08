@@ -22,9 +22,11 @@ public class fragmentReport extends Fragment{
 
         //initialize
         rootView = inflater.inflate(R.layout.fragment_report,container,false);
-        graphBt = rootView.findViewById(R.id.getGraph);
+        //graphBt = rootView.findViewById(R.id.getGraph);
         monthBt = rootView.findViewById(R.id.getMonthly);
         trendBt = rootView.findViewById(R.id.getTrend);
+
+        /*
 
         //각 버튼 클릭시 해당 레포트 결과 화면 띄움
         graphBt.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +38,8 @@ public class fragmentReport extends Fragment{
                 getActivity().finish();
             }
         });
+
+         */
 
 
         monthBt.setOnClickListener(new View.OnClickListener() {

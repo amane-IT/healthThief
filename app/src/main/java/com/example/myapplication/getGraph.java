@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +22,8 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 
 import java.text.ParseException;
@@ -160,6 +163,37 @@ public class getGraph extends AppCompatActivity {
         LineData lineData = new LineData(dataSet);
         chart.setData(lineData);
 
+
+        // 꺾은 선 그래프 클릭시 해당 날짜의 정보(getTrend.java) 가져오기
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener()
+        {
+            @Override
+            public void onValueSelected(Entry e, Highlight h)
+            {
+                float x = e.getX();
+                Log.d("CHART X VALUE",String.valueOf(x));
+                x--;
+                SimpleDateFormat format = new SimpleDateFormat ("yyyyMMdd");
+                Calendar time = Calendar.getInstance();
+                time.set(time.DAY_OF_WEEK, time.getFirstDayOfWeek());
+                time.add(Calendar.DATE,(int)x);
+                String date = format.format(time.getTime());
+                Log.d("CHART GET DATE: ",date);
+
+                Bundle args = new Bundle();
+                args.putString("date",date);
+
+                getTrend getTrend = new getTrend();
+                getTrend.setArguments(args);
+                getTrend.show(gg.getSupportFragmentManager(),"tag");
+            }
+
+            @Override
+            public void onNothingSelected()
+            {
+
+            }
+        });
 
 
     }
