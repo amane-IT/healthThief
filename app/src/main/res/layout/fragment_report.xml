@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="45sp"
+        android:textSize="40sp"
         android:layout_gravity="center"
         android:text="CHOOSE REPORT"/>
 
@@ -16,36 +16,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        >
+        android:gravity="center">
 
-        <Button
-            android:id="@+id/getTrend"
-            android:layout_width="240sp"
-            android:layout_height="wrap_content"
-            android:text="Day"
-            android:textSize="50sp"
-            android:padding="30dp"
-            android:background="@drawable/default_green_bt"
-            android:layout_marginBottom="20dp"/>
-
+        <!--
         <Button
             android:id="@+id/getGraph"
-            android:layout_width="240sp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Week"
+            android:text="DAY"
             android:textSize="50sp"
-            android:padding="30dp"
+            android:padding="20dp"
             android:background="@drawable/default_green_bt"
             android:layout_marginBottom="20dp"/>
+            -->
 
         <Button
             android:id="@+id/getMonthly"
-            android:layout_width="240sp"
+            android:layout_width="260sp"
             android:layout_height="wrap_content"
-            android:text="Month"
+            android:text="WEEK"
             android:textSize="50sp"
-            android:padding="30dp"
+            android:padding="20dp"
+            android:background="@drawable/default_green_bt"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/getTrend"
+            android:layout_width="260sp"
+            android:layout_height="wrap_content"
+            android:text="MONTH"
+            android:textSize="50sp"
+            android:padding="20dp"
             android:background="@drawable/default_green_bt"
             android:layout_marginBottom="20dp"/>
 
@@ -54,7 +55,3 @@
 
 
 </LinearLayout>
-
-    <!--제네크 내가 너를 미치도록 사랑해애애애ㅐㅐㅐㄱ-->
-
-

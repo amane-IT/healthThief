@@ -134,7 +134,7 @@ public class MyCamera extends AppCompatActivity {
 
         try {
             Interpreter.Options options = new Interpreter.Options();
-            interpreter = new Interpreter(loadModelFile("food50_407.tflite"), options);
+            interpreter = new Interpreter(loadModelFile("food50_405.tflite"), options);
             //원래 10가지
             //interpreter = new Interpreter(loadModelFile("mobilenet_v2.tflite"), options);
         }

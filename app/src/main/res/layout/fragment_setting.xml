@@ -15,22 +15,35 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
-            <TextView
-                android:id="@+id/setText1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="프로필" />
+        <TextView
+            android:id="@+id/setText1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필"
+            android:layout_gravity="center"
+            android:textSize="30sp"
+            android:layout_marginTop="10sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
             <TextView
-            android:id="@+id/setText2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="이름" />
+                android:id="@+id/setText2"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="이름" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fname"
@@ -43,13 +56,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
             <TextView
                 android:id="@+id/setText3"
-                android:layout_width="wrap_content"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:text="나이" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fage"
@@ -62,13 +85,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
-                <TextView
-                    android:id="@+id/setText4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="몸무게" />
+            <TextView
+                android:id="@+id/setText4"
+                android:layout_width="80sp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="몸무게" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fweight"
@@ -81,13 +114,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
             <TextView
                 android:id="@+id/setText7"
-                android:layout_width="wrap_content"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:text="키" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fheight"
@@ -100,13 +143,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
             <TextView
                 android:id="@+id/setText5"
-                android:layout_width="wrap_content"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:text="성별" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fsex"
@@ -119,13 +172,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="3sp"
+            android:layout_marginBottom="3sp">
 
             <TextView
                 android:id="@+id/setText6"
-                android:layout_width="wrap_content"
+                android:layout_width="80sp"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:gravity="center"
                 android:text="권장 칼로리" />
+
+            <View
+                android:layout_width="3sp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5sp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/fcalorie"
