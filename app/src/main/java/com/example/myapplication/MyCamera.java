@@ -22,8 +22,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -47,6 +51,7 @@ import java.nio.ByteOrder;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -92,6 +97,7 @@ public class MyCamera extends AppCompatActivity {
 
     private Button item1, item2, item3, item4, save;
     private ImageButton returnBtn;
+    ArrayList<String> dataList;
 
     public List<foodData> foodDataList;
 
@@ -118,6 +124,7 @@ public class MyCamera extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         getWindow().setFormat(PixelFormat.UNKNOWN);
 
+
         //db_manager = new DB_Manager();
 
         iv_food = (ImageView)findViewById(R.id.food_image);
@@ -127,7 +134,7 @@ public class MyCamera extends AppCompatActivity {
 
         try {
             Interpreter.Options options = new Interpreter.Options();
-            interpreter = new Interpreter(loadModelFile("food50_405.tflite"), options);
+            interpreter = new Interpreter(loadModelFile("food50_407.tflite"), options);
             //원래 10가지
             //interpreter = new Interpreter(loadModelFile("mobilenet_v2.tflite"), options);
         }
@@ -270,6 +277,12 @@ public class MyCamera extends AppCompatActivity {
                             //Log.d("탄수: ", data[i][4]);
                             //Log.d("단백질: ", data[i][5]);
                             i++;
+
+
+                            carbo = 0;
+                            protein = 0;
+                            fat = 0;
+                            serving = 100;
 
 
                         }
@@ -437,15 +450,44 @@ public class MyCamera extends AppCompatActivity {
             if(iv_food.getDrawable() != null) {
                 foodDialog.setContentView(R.layout.add_food_dialog);
                 foodDialog.setTitle("음식을 추가해 주세요.");
+
+                dataList =  new ArrayList<>();
+
+                settingData();
+
+                AutoCompleteTextView food_ed = (AutoCompleteTextView) foodDialog.findViewById(R.id.food_name);
+                food_ed.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, dataList));
+
+                EditText kcal_ed = (EditText) foodDialog.findViewById(R.id.kcal);
+                food_ed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        searchData(String.valueOf(food_ed.getText()));
+
+                        Log.d("칼로리", String.valueOf(kcal));
+
+                        if (kcal != 0) {
+                            kcal_ed.setText(Integer.toString(kcal));
+                        }
+                    }
+                });
+
+
                 Button close = (Button) foodDialog.findViewById(R.id.close);
                 close.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        EditText food_ed = (EditText) foodDialog.findViewById(R.id.food_name);
+
                         resultTextView.setText(food_ed.getText());
-                        EditText kcal_ed = (EditText) foodDialog.findViewById(R.id.kcal);
-                        kcal = Integer.parseInt(kcal_ed.getText().toString());
-                        foodDialog.dismiss();
+                        if (TextUtils.isEmpty(kcal_ed.getText()))
+                        {
+                            Toast.makeText(getApplicationContext(), "칼로리를 입력해 주세요!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            searchData(String.valueOf(food_ed.getText()));
+                            kcal = Integer.parseInt(kcal_ed.getText().toString());
+                            foodDialog.dismiss();
+                        }
                     }
                 });
 
@@ -465,10 +507,7 @@ public class MyCamera extends AppCompatActivity {
                         .setPositiveButton("돌아가기", back)
                         .show();
             }
-            carbo = 0;
-            protein = 0;
-            fat = 0;
-            serving = 100;
+
         }
         if (id_view == R.id.returnBtn)
         {
@@ -566,14 +605,15 @@ public class MyCamera extends AppCompatActivity {
 
         for (int i = 0; i < rank.length; i++)
         {
-            if(rank[i] == 1)
+            if(rank[i] == 2)
             {
                 resultTextView.setText(labels[i]);
                 first = i;
             }
 
-            if(rank[i] == 2)
+            if(rank[i] == 1)
             {
+
                 item1.setText(labels[i]);
             }
 
@@ -723,4 +763,13 @@ public class MyCamera extends AppCompatActivity {
 
         return image;
     }
+
+    private void settingData()
+    {
+        for (int k = 0; k < foodDataList.size(); k++)
+        {
+            dataList.add(foodDataList.get(k).getName());
+        }
+    }
+
 }
