@@ -197,6 +197,13 @@ public class getGraph extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, fragmentReport.class);
+        startActivity(intent);
+        super.onBackPressed();
+    }
+
     /*
     public class  AxisFormat implements IAxisValueFormatter{
         @Override

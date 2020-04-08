@@ -24,11 +24,14 @@ import java.util.Calendar;
 
 
 // 날짜별 다이어리 리스트(간소화된 정보)를 보여준다.
-public class fragmentDiary  extends Fragment {
+public class fragmentDiary  extends Fragment{
     View rootView;
     ImageButton camBt;
     Button dateBt;
 
+    long backKeyPressedTime;
+    Toast toast;
+    MainActivity activity;
 
     private DbHelper DbHelper;
     String dbName;
@@ -51,6 +54,11 @@ public class fragmentDiary  extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_diary,container,false);
         camBt = rootView.findViewById(R.id.diarayCam);
         dateBt = rootView.findViewById(R.id.chooseDate);
+
+        toast = Toast.makeText(getContext(),"한번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT);
+        activity = (MainActivity) getActivity();
+
+
 
         //디비 생성
         if (DbHelper == null){
@@ -186,5 +194,4 @@ public class fragmentDiary  extends Fragment {
         recyclerView.setAdapter(diaryListAdapter);
         diaryListAdapter.notifyDataSetChanged();
     }
-
 }

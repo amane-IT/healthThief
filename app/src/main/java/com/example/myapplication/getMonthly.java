@@ -1,10 +1,12 @@
 package com.example.myapplication;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -22,14 +24,12 @@ import java.util.Calendar;
 import java.util.Date;
 
 
-public class getMonthly extends AppCompatActivity{
+public class getMonthly extends AppCompatActivity {
 
     getMonthly gm = this;
     Button back;
     MaterialCalendarView calendarView;
     ArrayList<Diary> diaries;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +116,18 @@ public class getMonthly extends AppCompatActivity{
         });
 
 
-
         // 다이어리db에서 날짜 기반 데이터(1달) 가져와 칼로리 및 영양소 분석
         // 특정 날짜에 컬러색 칠하는 함수 만들기... 각 컬러 갯수 return (int형)
         // 맨 위에 색깔별 갯수 알려주기..
 
         //클릭하면 그 날짜에 먹은 메뉴? 다이어리 팝업? 고민 중...
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, fragmentReport.class);
+        startActivity(intent);
+        super.onBackPressed();
     }
 }
